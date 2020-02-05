@@ -12,7 +12,13 @@ var INITIAL_DATA = {
   MAP_PIN_WIDTH: 50,
   MAP_PIN_UPPER_Y: 130,
   MAP_PIN_LOWER_Y: 630,
-  MAP_PIN_LEFTMOST_X: 1
+  MAP_PIN_LEFTMOST_X: 1,
+  TEXT_OFFERS_TYPE: {
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дом',
+    palace: 'Дворец'
+  }
 };
 
 var offers = [];
@@ -71,7 +77,6 @@ var getNewOffers = function () {
       }
     });
   }
-  return [offers];
 };
 
 var getFragmentWithPin = function (offerElement) {
@@ -92,6 +97,45 @@ var addFragmentWithPinsToPage = function (bookingOffers) {
   document.querySelector('.map__pins').appendChild(Fragment);
 };
 
+var getCardElement = function (offerCard) {
+  var cardTemplate = document.querySelector('#card').content;
+  var cardElement = cardTemplate.cloneNode(true);
+  cardElement.querySelector('.popup__title').textContent = offerCard.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = offerCard.offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = offerCard.offer.price + '₽/ночь';
+  cardElement.querySelector('.popup__type').textContent = INITIAL_DATA.TEXT_OFFERS_TYPE[offerCard.offer.type];
+  cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
+  cardElement.querySelector('.popup__features').textContent = offerCard.offer.features;
+  cardElement.querySelector('.popup__description').textContent = offerCard.offer.description;
+  cardElement.querySelector('.popup__photos img').src = offerCard.offer.photos[0];
+  if (offerCard.offer.photos.length > 1) {
+    for (var n = 1; n < offerCard.offer.photos.length; n++) {
+      var newElement = document.createElement('img');
+      newElement.src = offerCard.offer.photos[n];
+      newElement.classList.add('popup__photo');
+      newElement.width = 45;
+      newElement.height = 40;
+      newElement.alt = 'Фотография жилья ' + (n + 1);
+      cardElement.querySelector('.popup__photos').appendChild(newElement);
+    }
+  }
+  cardElement.querySelector('.popup__avatar').src = offerCard.author.avatar;
+  return cardElement;
+};
+
+var getFragmentWithCards = function (offerCards) {
+  var cardsFragment = document.createDocumentFragment();
+  for (var num = 0; num < offerCards.length; num++) {
+    cardsFragment.appendChild(getCardElement(offers[num]));
+  }
+  return cardsFragment;
+};
+
 mapWithOffers.classList.remove('map--faded');
 getNewOffers();
 addFragmentWithPinsToPage(offers);
+
+var cardsFragment = getFragmentWithCards(offers);
+var mapFiltersContainer = document.querySelector('.map .map__filters-container');
+document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
