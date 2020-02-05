@@ -17,7 +17,9 @@ var mapWithOffers = document.querySelector('.map');
 var mapPinRightmostX = mapWithOffers.offsetWidth - MAP_PIN_WIDTH - 1;
 
 var getRandomValue = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 var arrayShuffle = function (array) {
