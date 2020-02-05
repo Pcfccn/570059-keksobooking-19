@@ -84,7 +84,7 @@ var getFragmentWithPin = function (offerElement) {
   return pinElement;
 };
 
-var addFragmentsWithPinToPage = function (bookingOffers) {
+var addFragmentWithPinsToPage = function (bookingOffers) {
   var Fragment = document.createDocumentFragment();
   for (var m = 0; m < bookingOffers.length; m++) {
     Fragment.appendChild(getFragmentWithPin(offers[m]));
@@ -94,4 +94,4 @@ var addFragmentsWithPinToPage = function (bookingOffers) {
 
 mapWithOffers.classList.remove('map--faded');
 getNewOffers();
-addFragmentsWithPinToPage(offers);
+addFragmentWithPinsToPage(offers);
