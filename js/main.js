@@ -18,7 +18,9 @@ var INITIAL_DATA = {
     bungalo: 'Бунгало',
     house: 'Дом',
     palace: 'Дворец'
-  }
+  },
+  offerPhotosWidth: 45,
+  offerPhotosHeight: 40
 };
 
 var offers = [];
@@ -114,8 +116,8 @@ var getCardElement = function (offerCard) {
       var newElement = document.createElement('img');
       newElement.src = offerCard.offer.photos[n];
       newElement.classList.add('popup__photo');
-      newElement.width = 45;
-      newElement.height = 40;
+      newElement.width = INITIAL_DATA.offerPhotosWidth;
+      newElement.height = INITIAL_DATA.offerPhotosHeight;
       newElement.alt = 'Фотография жилья ' + (n + 1);
       cardElement.querySelector('.popup__photos').appendChild(newElement);
     }
