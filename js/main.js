@@ -18,7 +18,9 @@ var INITIAL_DATA = {
     bungalo: 'Бунгало',
     house: 'Дом',
     palace: 'Дворец'
-  }
+  },
+  offerPhotosWidth: 45,
+  offerPhotosHeight: 40
 };
 
 var offers = [];
@@ -32,15 +34,16 @@ var getRandomValue = function (min, max) {
 };
 
 var arrayShuffle = function (array) {
+  var copiedArray = array.slice();
   var counter = array.length;
   while (counter > 0) {
     var index = Math.floor(Math.random() * counter);
     counter--;
-    var temp = array[counter];
-    array[counter] = array[index];
-    array[index] = temp;
+    var temp = copiedArray[counter];
+    copiedArray[counter] = copiedArray[index];
+    copiedArray[index] = temp;
   }
-  return array;
+  return copiedArray;
 };
 
 var getRandomOptions = function (arrayOptions) {
@@ -114,8 +117,8 @@ var getCardElement = function (offerCard) {
       var newElement = document.createElement('img');
       newElement.src = offerCard.offer.photos[n];
       newElement.classList.add('popup__photo');
-      newElement.width = 45;
-      newElement.height = 40;
+      newElement.width = INITIAL_DATA.offerPhotosWidth;
+      newElement.height = INITIAL_DATA.offerPhotosHeight;
       newElement.alt = 'Фотография жилья ' + (n + 1);
       cardElement.querySelector('.popup__photos').appendChild(newElement);
     }
