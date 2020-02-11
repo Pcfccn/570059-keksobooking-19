@@ -175,8 +175,6 @@ var onLeftButtonMouseOrEnterKeyMapPinMain = function (evt) {
     };
     mapWithOffers.classList.remove('map--faded');
     addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
-console.log(addressInput.value);
-
   }
 };
 
