@@ -171,7 +171,7 @@ var onLeftButtonMouseOrEnterKeyMapPinMain = function (evt) {
       y: Number(mapPinMain.style.top.substr(0, mapPinMain.style.top.length - 2)) + INITIAL_DATA.MAP_MAIN_PIN_HEIGHT
     };
     mapWithOffers.classList.remove('map--faded');
-    document.querySelector('.ad-form').classList.remove('ad-form--disabled')
+    document.querySelector('.ad-form').classList.remove('ad-form--disabled');
     addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
     getNewOffers();
     addFragmentWithPinsToPage(offers);
