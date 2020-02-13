@@ -11,7 +11,7 @@ var INITIAL_DATA = {
     'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
     'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
   MAP_PIN_WIDTH: 50,
-  MAP_MAIN_PIN_WIDTH: 62,
+  MAP_MAIN_PIN_WIDTH: 65,
   MAP_MAIN_PIN_HEIGHT: 87,
   MAP_PIN_UPPER_Y: 130,
   MAP_PIN_LOWER_Y: 630,
@@ -27,20 +27,40 @@ var INITIAL_DATA = {
 };
 
 var ROOM_OPTIONS = [
+  {rooms: '0', label: 'не для гостей'},
   {rooms: '1', label: 'для 1 гостя'},
   {rooms: '2', label: 'для 2 гостей'},
-  {rooms: '3', label: 'для 3 гостей'},
-  {rooms: '0', label: 'не для гостей'}
+  {rooms: '3', label: 'для 3 гостей'}
 ];
+
+var ROOMS_AMOUNT_VALUES = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
+};
+
+var OFFER_OPTIONS = {
+  types: ['bungalo', 'flat', 'house', 'palace'],
+  minPrice: [0, 1000, 5000, 10000],
+};
 
 var offers = [];
 var mapWithOffers = document.querySelector('.map');
 var mapPinRightmostX = mapWithOffers.offsetWidth - INITIAL_DATA.MAP_PIN_WIDTH - 1;
 
 var mapPinMain = document.querySelector('.map__pin--main');
+var getPinLocation = function () {
+  var location = {
+    x: parseInt(mapPinMain.style.left, 10),
+    y: parseInt(mapPinMain.style.top, 10)
+  };
+  return location;
+};
+
 var mapPinMainLocation = {
-  x: Number(mapPinMain.style.left.substr(0, mapPinMain.style.left.length - 2)) + INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2,
-  y: Number(mapPinMain.style.top.substr(0, mapPinMain.style.top.length - 2)) + INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2
+  x: getPinLocation().x + Math.round(INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2),
+  y: getPinLocation().y + Math.round(INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2)
 };
 var addressInput = document.querySelector('#address');
 addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
@@ -161,25 +181,34 @@ for (var inputNumber = 0; inputNumber < inputs.length; inputNumber++) {
   inputs[inputNumber].disabled = true;
 }
 
-var onLeftButtonMouseOrEnterKeyMapPinMain = function (evt) {
-  if (evt.button === 0 || evt.key === ENTER_KEY) {
-    for (var inputNumb = 0; inputNumb < inputs.length; inputNumb++) {
-      inputs[inputNumb].disabled = false;
-    }
-    mapPinMainLocation = {
-      x: Number(mapPinMain.style.left.substr(0, mapPinMain.style.left.length - 2)) + INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2,
-      y: Number(mapPinMain.style.top.substr(0, mapPinMain.style.top.length - 2)) + INITIAL_DATA.MAP_MAIN_PIN_HEIGHT
-    };
-    mapWithOffers.classList.remove('map--faded');
-    document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-    addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
-    getNewOffers();
-    addFragmentWithPinsToPage(offers);
+var activateMap = function () {
+  for (var inputNumb = 0; inputNumb < inputs.length; inputNumb++) {
+    inputs[inputNumb].disabled = false;
+  }
+  mapPinMainLocation = {
+    x: getPinLocation().x + Math.round(INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2),
+    y: getPinLocation().y + INITIAL_DATA.MAP_MAIN_PIN_HEIGHT
+  };
+  mapWithOffers.classList.remove('map--faded');
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
+  getNewOffers();
+  addFragmentWithPinsToPage(offers);
+};
+
+var onEnterKeyPinMain = function (evt) {
+  if (evt.key === ENTER_KEY) {
+    activateMap();
+  }
+};
+var onLeftMouseButtonPinMain = function (evt) {
+  if (evt.button === 0) {
+    activateMap();
   }
 };
 
-mapPinMain.addEventListener('mousedown', onLeftButtonMouseOrEnterKeyMapPinMain);
-mapPinMain.addEventListener('keydown', onLeftButtonMouseOrEnterKeyMapPinMain);
+mapPinMain.addEventListener('mousedown', onLeftMouseButtonPinMain);
+mapPinMain.addEventListener('keydown', onEnterKeyPinMain);
 
 
 var roomNumberInput = document.querySelector('#room_number');
@@ -190,55 +219,21 @@ var inputTimein = document.querySelector('#timein');
 var inputTimeout = document.querySelector('#timeout');
 
 typeInput.addEventListener('change', function (evt) {
-  var target = evt.target;
-  switch (target.value) {
-    case 'bungalo':
-      priceInput.placeholder = 0;
-      priceInput.min = 0;
-      break;
-    case 'flat':
-      priceInput.placeholder = 1000;
-      priceInput.min = 1000;
-      break;
-    case 'house':
-      priceInput.placeholder = 5000;
-      priceInput.min = 5000;
-      break;
-    case 'palace':
-      priceInput.placeholder = 10000;
-      priceInput.min = 10000;
-      break;
+  for (var caseNum = 0; caseNum < OFFER_OPTIONS.types.length; caseNum++) {
+    switch (evt.target.value) {
+      case OFFER_OPTIONS.types[caseNum]:
+        priceInput.placeholder = OFFER_OPTIONS.minPrice[caseNum];
+        priceInput.min = OFFER_OPTIONS.minPrice[caseNum];
+        break;
+    }
   }
 });
 
 inputTimein.addEventListener('change', function (evt) {
-  var targetInput = evt.target;
-  switch (targetInput.value) {
-    case '12:00':
-      inputTimeout.value = '12:00';
-      break;
-    case '13:00':
-      inputTimeout.value = '13:00';
-      break;
-    case '14:00':
-      inputTimeout.value = '14:00';
-      break;
-  }
+  inputTimeout.value = evt.target.value;
 });
-
 inputTimeout.addEventListener('change', function (evt) {
-  var targetInput = evt.target;
-  switch (targetInput.value) {
-    case '12:00':
-      inputTimein.value = '12:00';
-      break;
-    case '13:00':
-      inputTimein.value = '13:00';
-      break;
-    case '14:00':
-      inputTimein.value = '14:00';
-      break;
-  }
+  inputTimein.value = evt.target.value;
 });
 
 var removeOptions = function () {
@@ -256,22 +251,17 @@ var getRoomInfo = function (roomNum) {
 };
 
 roomNumberInput.addEventListener('change', function (evt) {
-  var targetInput = evt.target;
   removeOptions();
-  switch (targetInput.value) {
-    case '1':
-      getRoomInfo(0);
-      break;
-    case '2':
-      getRoomInfo(0);
-      getRoomInfo(1);
-      break;
-    case '3':
-      getRoomInfo(0);
-      getRoomInfo(1);
-      getRoomInfo(2);
-      break;
-    case '100': getRoomInfo(3);
-      break;
+  var rooms = ROOMS_AMOUNT_VALUES[evt.target.value];
+  for (var room = 0; room < rooms.length; room++) {
+    getRoomInfo(rooms[room]);
   }
+});
+
+var form = document.querySelector('.ad-form');
+var resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  form.reset();
+  addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
 });
