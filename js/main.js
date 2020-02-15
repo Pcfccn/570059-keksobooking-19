@@ -1,6 +1,7 @@
 'use strict';
 var ENTER_KEY = 'Enter';
 var ESC_KEY = 'Escape';
+var LEFT_CLICK_CODE = 0;
 var INITIAL_DATA = {
   NUMBER_OF_OFFERS: 8,
   TYPES: ['palace', 'flat', 'house', 'bungalo'],
@@ -196,6 +197,8 @@ var activateMap = function () {
   addressInput.value = mapPinMainLocation.x + ', ' + mapPinMainLocation.y;
   addFragmentWithPinsToPage(offers);
   getPinsListener();
+  mapPinMain.removeEventListener('mousedown', onLeftMouseButtonPinMain);
+  mapPinMain.removeEventListener('keydown', onEnterKeyPinMain);
 };
 
 var onEnterKeyPinMain = function (evt) {
@@ -204,7 +207,7 @@ var onEnterKeyPinMain = function (evt) {
   }
 };
 var onLeftMouseButtonPinMain = function (evt) {
-  if (evt.button === 0) {
+  if (evt.button === LEFT_CLICK_CODE) {
     activateMap();
   }
 };
@@ -222,11 +225,9 @@ var inputTimeout = document.querySelector('#timeout');
 
 typeInput.addEventListener('change', function (evt) {
   for (var caseNum = 0; caseNum < OFFER_OPTIONS.types.length; caseNum++) {
-    switch (evt.target.value) {
-      case OFFER_OPTIONS.types[caseNum]:
-        priceInput.placeholder = OFFER_OPTIONS.minPrice[caseNum];
-        priceInput.min = OFFER_OPTIONS.minPrice[caseNum];
-        break;
+    if (evt.target.value === OFFER_OPTIONS.types[caseNum]) {
+      priceInput.placeholder = OFFER_OPTIONS.minPrice[caseNum];
+      priceInput.min = OFFER_OPTIONS.minPrice[caseNum];
     }
   }
 });
@@ -271,9 +272,12 @@ resetButton.addEventListener('click', function (evt) {
 var getPinsListener = function () {
   var offerCard = document.querySelectorAll('.map__card.popup');
   var offerPin = document.querySelectorAll('.map__pin');
+
   var hideAllCards = function () {
     for (var offerCardNum = 0; offerCardNum < offerCard.length; offerCardNum++) {
       offerCard[offerCardNum].classList.add('hidden');
+      document.removeEventListener('keydown', onCardEscPress);
+      offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
     }
   };
 
@@ -288,7 +292,7 @@ var getPinsListener = function () {
       if (evt.button === 0 || evt.key === ENTER_KEY) {
         hideAllCards();
         offerCard[num - 1].classList.remove('hidden');
-        offerCard[num - 1].addEventListener('keydown', onCardEscPress);
+        document.addEventListener('keydown', onCardEscPress);
         offerCard[num - 1].querySelector('.popup__close').addEventListener('click', hideAllCards);
       }
     }
