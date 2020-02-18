@@ -1,12 +1,13 @@
 'use strict';
 (function () {
+  var data = window.data;
   var addPhotos = function (elementCard, offerCard) {
     for (var n = 1; n < offerCard.offer.photos.length; n++) {
       var newElement = document.createElement('img');
       newElement.src = offerCard.offer.photos[n];
       newElement.classList.add('popup__photo');
-      newElement.width = window.data.INITIAL_DATA.offerPhotosWidth;
-      newElement.height = window.data.INITIAL_DATA.offerPhotosHeight;
+      newElement.width = data.offerPhotosWidth;
+      newElement.height = data.offerPhotosHeight;
       newElement.alt = 'Фотография жилья ' + (n + 1);
       elementCard.querySelector('.popup__photos').appendChild(newElement);
     }
@@ -18,7 +19,7 @@
     cardElement.querySelector('.popup__title').textContent = offerCard.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = offerCard.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = offerCard.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = window.data.INITIAL_DATA.TEXT_OFFERS_TYPE[offerCard.offer.type];
+    cardElement.querySelector('.popup__type').textContent = data.INITIAL.TEXT_OFFERS_TYPE[offerCard.offer.type];
     cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
     cardElement.querySelector('.popup__features').textContent = offerCard.offer.features;
@@ -34,48 +35,49 @@
   var getFragmentWithCards = function (offerCards) {
     var cardsFragments = document.createDocumentFragment();
     for (var num = 0; num < offerCards.length; num++) {
-      cardsFragments.appendChild(getCardElement(window.data.offers[num]));
+      cardsFragments.appendChild(getCardElement(data.offers[num]));
     }
     return cardsFragments;
   };
 
-  window.getNewOffers();
-  var cardsFragment = getFragmentWithCards(window.data.offers);
+  data.getNewOffers();
+  var cardsFragment = getFragmentWithCards(data.offers);
   var mapFiltersContainer = document.querySelector('.map .map__filters-container');
   document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
 
   var onCardEscPress = function (evt) {
-    if (evt.key === window.data.ESC_KEY) {
+    if (evt.key === data.ESC_KEY) {
       hideAllCards();
     }
   };
 
   var hideAllCards = function () {
-    for (var offerCardNum = 0; offerCardNum < window.data.offerCard.length; offerCardNum++) {
-      if (!window.data.offerCard[offerCardNum].classList.contains('hidden')) {
-        window.data.offerCard[offerCardNum].classList.add('hidden');
+    for (var offerCardNum = 0; offerCardNum < data.offerCard.length; offerCardNum++) {
+      if (!data.offerCard[offerCardNum].classList.contains('hidden')) {
+        data.offerCard[offerCardNum].classList.add('hidden');
       }
       document.removeEventListener('keydown', onCardEscPress);
-      window.data.offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
+      data.offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
     }
   };
 
   var showOffercard = function (num) {
-    window.data.offerPin[num].addEventListener('click', function (evt) {
-      if (evt.button === window.data.LEFT_CLICK_CODE || evt.key === window.data.ENTER_KEY) {
+    data.offerPin[num].addEventListener('click', function (evt) {
+      if (evt.button === data.LEFT_CLICK_CODE || evt.key === data.ENTER_KEY) {
         hideAllCards();
-        window.data.offerCard[num - 1].classList.remove('hidden');
+        data.offerCard[num - 1].classList.remove('hidden');
         document.addEventListener('keydown', onCardEscPress);
-        window.data.offerCard[num - 1].querySelector('.popup__close').addEventListener('click', hideAllCards);
+        data.offerCard[num - 1].querySelector('.popup__close').addEventListener('click', hideAllCards);
       }
     }
     );
   };
 
-  window.getPinsListener = function () {
-    for (var shNum = 1; shNum <= window.data.offers.length; shNum++) {
+  window.card = {getPinsListener: function () {
+    for (var shNum = 1; shNum <= data.offers.length; shNum++) {
       showOffercard(shNum);
     }
+  }
   };
 
 })();

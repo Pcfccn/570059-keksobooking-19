@@ -1,11 +1,15 @@
 'use strict';
 (function () {
-  window.addressInput = document.querySelector('#address');
-  window.addressInput.value = window.mapPinMainLocation.x + ', ' + window.mapPinMainLocation.y;
+  window.form = {
+    addressInput: document.querySelector('#address'),
+    inputs: document.querySelectorAll('fieldSet')
+  };
 
-  window.inputs = document.querySelectorAll('fieldSet');
-  for (var inputNumber = 0; inputNumber < window.inputs.length; inputNumber++) {
-    window.inputs[inputNumber].disabled = true;
+  window.form.addressInput.value = window.pin.mainLocation.x + ', ' + window.pin.mainLocation.y;
+
+  window.form.inputs = document.querySelectorAll('fieldSet');
+  for (var inputNumber = 0; inputNumber < window.form.inputs.length; inputNumber++) {
+    window.form.inputs[inputNumber].disabled = true;
   }
 
   var roomNumberInput = document.querySelector('#room_number');
@@ -58,6 +62,6 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     form.reset();
-    window.addressInput.value = window.mapPinMainLocation.x + ', ' + window.mapPinMainLocation.y;
+    window.form.addressInput.value = window.pin.mainLocation.x + ', ' + window.pin.mainLocation.y;
   });
 })();

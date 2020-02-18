@@ -4,7 +4,7 @@
     ENTER_KEY: 'Enter',
     ESC_KEY: 'Escape',
     LEFT_CLICK_CODE: 0,
-    INITIAL_DATA: {
+    INITIAL: {
       NUMBER_OF_OFFERS: 8,
       TYPES: ['palace', 'flat', 'house', 'bungalo'],
       CHECKIN_TIMES: ['12:00', '13:00', '14:00'],
@@ -49,67 +49,63 @@
     },
 
     offers: [],
-    offerCard: '',
-    offerPin: ''
-  };
 
+    getRandomValue: function (min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
 
-  window.getRandomValue = function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+    arrayShuffle: function (array) {
+      var copiedArray = array.slice();
+      var counter = array.length;
+      while (counter > 0) {
+        var index = Math.floor(Math.random() * counter);
+        counter--;
+        var temp = copiedArray[counter];
+        copiedArray[counter] = copiedArray[index];
+        copiedArray[index] = temp;
+      }
+      return copiedArray;
+    },
 
-  window.arrayShuffle = function (array) {
-    var copiedArray = array.slice();
-    var counter = array.length;
-    while (counter > 0) {
-      var index = Math.floor(Math.random() * counter);
-      counter--;
-      var temp = copiedArray[counter];
-      copiedArray[counter] = copiedArray[index];
-      copiedArray[index] = temp;
-    }
-    return copiedArray;
-  };
+    getRandomOptions: function (arrayOptions) {
+      var randomOptions = [];
+      this.arrayShuffle(arrayOptions);
+      for (var j = 0; j < this.getRandomValue(1, arrayOptions.length); j++) {
+        randomOptions.push(arrayOptions[j]);
+      }
+      return randomOptions;
+    },
 
-  window.getRandomOptions = function (arrayOptions) {
-    var randomOptions = [];
-    window.arrayShuffle(arrayOptions);
-    for (var j = 0; j < window.getRandomValue(1, arrayOptions.length); j++) {
-      randomOptions.push(arrayOptions[j]);
-    }
-    return randomOptions;
-  };
-
-  var mapWithOffers = document.querySelector('.map');
-  var mapPinRightmostX = mapWithOffers.offsetWidth - window.data.INITIAL_DATA.MAP_PIN_WIDTH - 1;
-
-  window.getNewOffers = function () {
-    for (var l = 0; l < window.data.INITIAL_DATA.NUMBER_OF_OFFERS; l++) {
-      var numberOfRooms = window.getRandomValue(1, 10);
-      var x = window.getRandomValue(window.data.INITIAL_DATA.MAP_PIN_LEFTMOST_X, mapPinRightmostX);
-      var y = window.getRandomValue(window.data.INITIAL_DATA.MAP_PIN_UPPER_Y, window.data.INITIAL_DATA.MAP_PIN_LOWER_Y);
-      window.data.offers.push({
-        author: {
-          avatar: 'img/avatars/user0' + (l + 1) + '.png',
-        },
-        offer: {
-          title: 'заголовок предложения 0' + (l + 1),
-          address: x + ', ' + y,
-          price: window.getRandomValue(5000, 100000),
-          type: window.data.INITIAL_DATA.TYPES[window.getRandomValue(0, window.data.INITIAL_DATA.TYPES.length - 1)],
-          rooms: numberOfRooms,
-          guests: window.getRandomValue(numberOfRooms, numberOfRooms * 3),
-          checkin: window.data.INITIAL_DATA.CHECKIN_TIMES[window.getRandomValue(0, window.data.INITIAL_DATA.CHECKIN_TIMES.length - 1)],
-          checkout: window.data.INITIAL_DATA.CHECKOUT_TIMES[window.getRandomValue(0, window.data.INITIAL_DATA.CHECKOUT_TIMES.length - 1)],
-          features: window.getRandomOptions(window.data.INITIAL_DATA.OFFERS_FEATURES),
-          description: 'описание предложения 0' + (l + 1),
-          photos: window.getRandomOptions(window.data.INITIAL_DATA.PHOTOS),
-          location: {x: x, y: y}
-        }
-      });
+    getNewOffers: function () {
+      var mapWithOffers = document.querySelector('.map');
+      var mapPinRightmostX = mapWithOffers.offsetWidth - this.INITIAL.MAP_PIN_WIDTH - 1;
+      for (var l = 0; l < this.INITIAL.NUMBER_OF_OFFERS; l++) {
+        var numberOfRooms = this.getRandomValue(1, 10);
+        var x = this.getRandomValue(this.INITIAL.MAP_PIN_LEFTMOST_X, mapPinRightmostX);
+        var y = this.getRandomValue(this.INITIAL.MAP_PIN_UPPER_Y, this.INITIAL.MAP_PIN_LOWER_Y);
+        this.offers.push({
+          author: {
+            avatar: 'img/avatars/user0' + (l + 1) + '.png',
+          },
+          offer: {
+            title: 'заголовок предложения 0' + (l + 1),
+            address: x + ', ' + y,
+            price: this.getRandomValue(5000, 100000),
+            type: this.INITIAL.TYPES[this.getRandomValue(0, this.INITIAL.TYPES.length - 1)],
+            rooms: numberOfRooms,
+            guests: this.getRandomValue(numberOfRooms, numberOfRooms * 3),
+            checkin: this.INITIAL.CHECKIN_TIMES[this.getRandomValue(0, this.INITIAL.CHECKIN_TIMES.length - 1)],
+            checkout: this.INITIAL.CHECKOUT_TIMES[this.getRandomValue(0, this.INITIAL.CHECKOUT_TIMES.length - 1)],
+            features: this.getRandomOptions(this.INITIAL.OFFERS_FEATURES),
+            description: 'описание предложения 0' + (l + 1),
+            photos: this.getRandomOptions(this.INITIAL.PHOTOS),
+            location: {x: x, y: y}
+          }
+        });
+      }
     }
   };
-
 })();
+

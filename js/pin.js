@@ -1,18 +1,13 @@
 'use strict';
 (function () {
-  window.mapPinMain = document.querySelector('.map__pin--main');
-  window.getPinLocation = function () {
+  var data = window.data;
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var getPinLocation = function () {
     var location = {
-      x: parseInt(window.mapPinMain.style.left, 10),
-      y: parseInt(window.mapPinMain.style.top, 10)
+      x: parseInt(mapPinMain.style.left, 10),
+      y: parseInt(mapPinMain.style.top, 10)
     };
     return location;
-  };
-  window.mapWithOffers = document.querySelector('.map');
-
-  window.mapPinMainLocation = {
-    x: window.getPinLocation().x + Math.round(window.data.INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2),
-    y: window.getPinLocation().y + Math.round(window.data.INITIAL_DATA.MAP_MAIN_PIN_WIDTH / 2)
   };
 
   var getFragmentWithPin = function (offerElement) {
@@ -25,26 +20,35 @@
     return pinElement;
   };
 
-  window.addFragmentWithPinsToPage = function (bookingOffers) {
-    var Fragment = document.createDocumentFragment();
-    for (var m = 0; m < bookingOffers.length; m++) {
-      Fragment.appendChild(getFragmentWithPin(window.data.offers[m]));
-    }
-    document.querySelector('.map__pins').appendChild(Fragment);
+  window.pin = {
+    main: mapPinMain,
+    getLocation: getPinLocation,
+    mainLocation: {
+      x: getPinLocation().x + Math.round(data.INITIAL.MAP_MAIN_PIN_WIDTH / 2),
+      y: getPinLocation().y + Math.round(data.INITIAL.MAP_MAIN_PIN_WIDTH / 2)
+    },
+
+    addFragmentWithPinsToPage: function (bookingOffers) {
+      var Fragment = document.createDocumentFragment();
+      for (var m = 0; m < bookingOffers.length; m++) {
+        Fragment.appendChild(getFragmentWithPin(data.offers[m]));
+      }
+      document.querySelector('.map__pins').appendChild(Fragment);
+    },
+
+    onEnterKeyMain: function (evt) {
+      if (evt.key === data.ENTER_KEY) {
+        window.activateMap();
+      }
+    },
+    onLeftMouseButtonMain: function (evt) {
+      if (evt.button === data.LEFT_CLICK_CODE) {
+        window.map.activate();
+      }
+    },
   };
 
-  window.onEnterKeyPinMain = function (evt) {
-    if (evt.key === window.data.ENTER_KEY) {
-      window.activateMap();
-    }
-  };
-  window.onLeftMouseButtonPinMain = function (evt) {
-    if (evt.button === window.data.LEFT_CLICK_CODE) {
-      window.activateMap();
-    }
-  };
-
-  window.mapPinMain.addEventListener('mousedown', window.onLeftMouseButtonPinMain);
-  window.mapPinMain.addEventListener('keydown', window.onEnterKeyPinMain);
+  mapPinMain.addEventListener('mousedown', window.pin.onLeftMouseButtonMain);
+  mapPinMain.addEventListener('keydown', window.pin.onEnterKeyMain);
 
 })();
