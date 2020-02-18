@@ -60,7 +60,11 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     form.reset();
-    addressInput.value = window.pin.mainActiveLocation.x + ', ' + window.pin.mainActiveLocation.y;
+    removeOptions();
+    getRoomInfo(window.data.const.ROOMS_AMOUNT_VALUES['1']);
+    priceInput.placeholder = window.data.const.OFFER_OPTIONS.minPrice[0];
+    priceInput.min = window.data.const.OFFER_OPTIONS.minPrice[0];
+    addressInput.value = window.pin.mainActiveLocation().x + ', ' + window.pin.mainActiveLocation().y;
   });
   window.form = {
     addressInput: addressInput,
