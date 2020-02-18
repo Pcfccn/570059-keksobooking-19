@@ -5,7 +5,7 @@
     inputs: document.querySelectorAll('fieldSet')
   };
 
-  window.form.addressInput.value = window.pin.mainLocation.x + ', ' + window.pin.mainLocation.y;
+  window.form.addressInput.value = window.pin.mainStartLocation.x + ', ' + window.pin.mainStartLocation.y;
 
   window.form.inputs = document.querySelectorAll('fieldSet');
   for (var inputNumber = 0; inputNumber < window.form.inputs.length; inputNumber++) {
@@ -62,6 +62,6 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     form.reset();
-    window.form.addressInput.value = window.pin.mainLocation.x + ', ' + window.pin.mainLocation.y;
+    window.form.addressInput.value = window.pin.mainActiveLocation.x + ', ' + window.pin.mainActiveLocation.y;
   });
 })();

@@ -23,9 +23,13 @@
   window.pin = {
     main: mapPinMain,
     getLocation: getPinLocation,
-    mainLocation: {
+    mainStartLocation: {
       x: getPinLocation().x + Math.round(data.INITIAL.MAP_MAIN_PIN_WIDTH / 2),
       y: getPinLocation().y + Math.round(data.INITIAL.MAP_MAIN_PIN_WIDTH / 2)
+    },
+    mainActiveLocation: {
+      x: getPinLocation().x + Math.round(data.INITIAL.MAP_MAIN_PIN_WIDTH / 2),
+      y: getPinLocation().y + data.INITIAL.MAP_MAIN_PIN_HEIGHT
     },
 
     addFragmentWithPinsToPage: function (bookingOffers) {
