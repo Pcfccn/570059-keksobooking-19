@@ -19,7 +19,7 @@
     cardElement.querySelector('.popup__title').textContent = offerCard.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = offerCard.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = offerCard.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = data.INITIAL.TEXT_OFFERS_TYPE[offerCard.offer.type];
+    cardElement.querySelector('.popup__type').textContent = data.const.INITIAL.TEXT_OFFERS_TYPE[offerCard.offer.type];
     cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
     cardElement.querySelector('.popup__features').textContent = offerCard.offer.features;
@@ -73,11 +73,12 @@
     );
   };
 
-  window.card = {getPinsListener: function () {
-    for (var shNum = 1; shNum <= data.offers.length; shNum++) {
-      showOffercard(shNum);
+  window.card = {
+    getPinsListener: function () {
+      for (var shNum = 1; shNum <= data.offers.length; shNum++) {
+        showOffercard(shNum);
+      }
     }
-  }
   };
 
 })();
