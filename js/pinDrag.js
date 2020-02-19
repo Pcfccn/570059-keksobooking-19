@@ -35,11 +35,12 @@
       pin.style.top = (pin.offsetTop - shift.y) + 'px';
       pin.style.left = (pin.offsetLeft - shift.x) + 'px';
       window.form.addressInput.value = window.pin.mainActiveLocation().x + ', ' + window.pin.mainActiveLocation().y;
+      checkPinPosition();
     };
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       getPinPosition(moveEvt);
-      checkPinPosition();
+      // checkPinPosition();
 
     };
     var onMouseUp = function (upEvt) {
@@ -47,7 +48,7 @@
       getPinPosition(upEvt);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      checkPinPosition();
+      // checkPinPosition();
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
