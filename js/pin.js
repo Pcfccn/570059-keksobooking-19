@@ -28,7 +28,7 @@
   var mainActiveLocation = function () {
     var loc = {
       x: getPinLocation().x + Math.round(data.const.INITIAL.MAP_MAIN_PIN_WIDTH / 2),
-      y: getPinLocation().y + data.const.INITIAL.MAP_MAIN_PIN_HEIGHT}
+      y: getPinLocation().y + data.const.INITIAL.MAP_MAIN_PIN_HEIGHT};
     return loc;
   };
 
