@@ -15,7 +15,8 @@
         pin.style.left = (window.data.mapMainPinRightmostX + window.data.const.INITIAL.MAP_MAIN_PIN_WIDTH / 2) + 'px';
       } else if (pin.offsetLeft < (window.data.const.INITIAL.MAP_PIN_LEFTMOST_X - window.data.const.INITIAL.MAP_MAIN_PIN_WIDTH / 2)) {
         pin.style.left = (window.data.const.INITIAL.MAP_PIN_LEFTMOST_X - window.data.const.INITIAL.MAP_MAIN_PIN_WIDTH / 2) + 'px';
-      } else if (pin.offsetTop < window.data.const.INITIAL.MAP_PIN_UPPER_Y) {
+      }
+      if (pin.offsetTop < window.data.const.INITIAL.MAP_PIN_UPPER_Y) {
         pin.style.top = window.data.const.INITIAL.MAP_PIN_UPPER_Y + 'px';
       } else if (pin.offsetTop > window.data.const.INITIAL.MAP_PIN_LOWER_Y) {
         pin.style.top = window.data.const.INITIAL.MAP_PIN_LOWER_Y + 'px';
@@ -35,7 +36,6 @@
       pin.style.left = (pin.offsetLeft - shift.x) + 'px';
       window.form.addressInput.value = window.pin.mainActiveLocation().x + ', ' + window.pin.mainActiveLocation().y;
     };
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       getPinPosition(moveEvt);
@@ -47,7 +47,7 @@
       getPinPosition(upEvt);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-
+      checkPinPosition();
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
