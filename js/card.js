@@ -1,13 +1,14 @@
 'use strict';
 (function () {
   var data = window.data;
+  var CONS = window.data.CONS;
   var addPhotos = function (elementCard, offerCard) {
     for (var n = 1; n < offerCard.offer.photos.length; n++) {
       var newElement = document.createElement('img');
       newElement.src = offerCard.offer.photos[n];
       newElement.classList.add('popup__photo');
-      newElement.width = data.offerPhotosWidth;
-      newElement.height = data.offerPhotosHeight;
+      newElement.width = CONS.OFFER_PHOTO_WIDTH;
+      newElement.height = CONS.OFFER_PHOTO_HEIGHT;
       newElement.alt = 'Фотография жилья ' + (n + 1);
       elementCard.querySelector('.popup__photos').appendChild(newElement);
     }
@@ -19,7 +20,7 @@
     cardElement.querySelector('.popup__title').textContent = offerCard.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = offerCard.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = offerCard.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = data.const.INITIAL.TEXT_OFFERS_TYPE[offerCard.offer.type];
+    cardElement.querySelector('.popup__type').textContent = CONS.TEXT_OFFERS_TYPE[offerCard.offer.type];
     cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
     cardElement.querySelector('.popup__features').textContent = offerCard.offer.features;
@@ -46,7 +47,7 @@
   document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
 
   var onCardEscPress = function (evt) {
-    if (evt.key === data.ESC_KEY) {
+    if (evt.key === CONS.ESC_KEY) {
       hideAllCards();
     }
   };
@@ -63,7 +64,7 @@
 
   var showOffercard = function (num) {
     data.offerPin[num].addEventListener('click', function (evt) {
-      if (evt.button === data.LEFT_CLICK_CODE || evt.key === data.ENTER_KEY) {
+      if (evt.button === CONS.LEFT_CLICK_CODE || evt.key === CONS.ENTER_KEY) {
         hideAllCards();
         data.offerCard[num - 1].classList.remove('hidden');
         document.addEventListener('keydown', onCardEscPress);

@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+  var CONS = window.data.CONS;
   var mapWithOffers = document.querySelector('.map');
   var data = window.data;
   var activate = function () {
@@ -8,7 +9,7 @@
     }
     mapWithOffers.classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-    window.form.addressInput.value = window.pin.mainActiveLocation().x + ', ' + window.pin.mainActiveLocation().y;
+    window.form.addressInput.value = window.pin.mainActiveLocation().x + ', ' + (window.pin.mainActiveLocation().y - CONS.MAP_MAIN_PIN_HEIGHT);
     window.pin.addFragmentWithPinsToPage(window.data.offers);
     data.offerCard = document.querySelectorAll('.map__card.popup');
     data.offerPin = document.querySelectorAll('.map__pin');

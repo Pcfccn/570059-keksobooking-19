@@ -1,34 +1,31 @@
 'use strict';
 (function () {
-  var data = {
+  var DATA = {
     ENTER_KEY: 'Enter',
     ESC_KEY: 'Escape',
     LEFT_CLICK_CODE: 0,
-    INITIAL: {
-      NUMBER_OF_OFFERS: 8,
-      TYPES: ['palace', 'flat', 'house', 'bungalo'],
-      CHECKIN_TIMES: ['12:00', '13:00', '14:00'],
-      CHECKOUT_TIMES: ['12:00', '13:00', '14:00'],
-      OFFERS_FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-      PHOTOS: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-        'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-        'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
-      MAP_PIN_WIDTH: 50,
-      MAP_MAIN_PIN_WIDTH: 65,
-      MAP_MAIN_PIN_HEIGHT: 87,
-      MAP_PIN_UPPER_Y: 130,
-      MAP_PIN_LOWER_Y: 630,
-      MAP_PIN_LEFTMOST_X: 1,
-      TEXT_OFFERS_TYPE: {
-        flat: 'Квартира',
-        bungalo: 'Бунгало',
-        house: 'Дом',
-        palace: 'Дворец'
-      },
-      offerPhotosWidth: 45,
-      offerPhotosHeight: 40
+    NUMBER_OF_OFFERS: 8,
+    TYPES: ['palace', 'flat', 'house', 'bungalo'],
+    CHECKIN_TIMES: ['12:00', '13:00', '14:00'],
+    CHECKOUT_TIMES: ['12:00', '13:00', '14:00'],
+    OFFERS_FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
+    PHOTOS: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+      'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+      'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
+    MAP_PIN_WIDTH: 50,
+    MAP_MAIN_PIN_WIDTH: 65,
+    MAP_MAIN_PIN_HEIGHT: 77,
+    MAP_PIN_UPPER_Y: 130,
+    MAP_PIN_LOWER_Y: 630,
+    MAP_PIN_LEFTMOST_X: 1,
+    TEXT_OFFERS_TYPE: {
+      flat: 'Квартира',
+      bungalo: 'Бунгало',
+      house: 'Дом',
+      palace: 'Дворец'
     },
-
+    OFFER_PHOTO_WIDTH: 45,
+    OFFER_PHOTO_HEIGHT: 40,
     ROOM_OPTIONS: [
       {rooms: '0', label: 'не для гостей'},
       {rooms: '1', label: 'для 1 гостя'},
@@ -80,13 +77,13 @@
   };
 
   var mapWithOffers = document.querySelector('.map');
-  var mapPinRightmostX = mapWithOffers.offsetWidth - data.INITIAL.MAP_PIN_WIDTH - 1;
-  var mapMainPinRightmostX = mapWithOffers.offsetWidth - data.INITIAL.MAP_MAIN_PIN_WIDTH - 1;
+  var mapPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_PIN_WIDTH - 1;
+  var mapMainPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_MAIN_PIN_WIDTH - 1;
   var getNewOffers = function () {
-    for (var l = 0; l < data.INITIAL.NUMBER_OF_OFFERS; l++) {
+    for (var l = 0; l < DATA.NUMBER_OF_OFFERS; l++) {
       var numberOfRooms = getRandomValue(1, 10);
-      var x = getRandomValue(data.INITIAL.MAP_PIN_LEFTMOST_X, mapPinRightmostX);
-      var y = getRandomValue(data.INITIAL.MAP_PIN_UPPER_Y, data.INITIAL.MAP_PIN_LOWER_Y);
+      var x = getRandomValue(DATA.MAP_PIN_LEFTMOST_X, mapPinRightmostX);
+      var y = getRandomValue(DATA.MAP_PIN_UPPER_Y, DATA.MAP_PIN_LOWER_Y);
       offers.push({
         author: {
           avatar: 'img/avatars/user0' + (l + 1) + '.png',
@@ -95,21 +92,21 @@
           title: 'заголовок предложения 0' + (l + 1),
           address: x + ', ' + y,
           price: getRandomValue(5000, 100000),
-          type: data.INITIAL.TYPES[getRandomValue(0, data.INITIAL.TYPES.length - 1)],
+          type: DATA.TYPES[getRandomValue(0, DATA.TYPES.length - 1)],
           rooms: numberOfRooms,
           guests: getRandomValue(numberOfRooms, numberOfRooms * 3),
-          checkin: data.INITIAL.CHECKIN_TIMES[getRandomValue(0, data.INITIAL.CHECKIN_TIMES.length - 1)],
-          checkout: data.INITIAL.CHECKOUT_TIMES[getRandomValue(0, data.INITIAL.CHECKOUT_TIMES.length - 1)],
-          features: getRandomOptions(data.INITIAL.OFFERS_FEATURES),
+          checkin: DATA.CHECKIN_TIMES[getRandomValue(0, DATA.CHECKIN_TIMES.length - 1)],
+          checkout: DATA.CHECKOUT_TIMES[getRandomValue(0, DATA.CHECKOUT_TIMES.length - 1)],
+          features: getRandomOptions(DATA.OFFERS_FEATURES),
           description: 'описание предложения 0' + (l + 1),
-          photos: getRandomOptions(data.INITIAL.PHOTOS),
+          photos: getRandomOptions(DATA.PHOTOS),
           location: {x: x, y: y}
         }
       });
     }
   };
   window.data = {
-    const: data,
+    CONS: DATA,
     offers: offers,
     getRandomValue: getRandomValue,
     getNewOffers: getNewOffers,
