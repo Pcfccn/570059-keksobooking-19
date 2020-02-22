@@ -1,15 +1,14 @@
 'use strict';
 (function () {
-  window.form = {
-    addressInput: document.querySelector('#address'),
-    inputs: document.querySelectorAll('fieldSet')
-  };
+  var CONS = window.data.CONS;
+  var addressInput = document.querySelector('#address');
+  var inputs = document.querySelectorAll('fieldSet');
 
-  window.form.addressInput.value = window.pin.mainStartLocation.x + ', ' + window.pin.mainStartLocation.y;
+  addressInput.value = window.pin.mainStartLocation.x + ', ' + window.pin.mainStartLocation.y;
 
-  window.form.inputs = document.querySelectorAll('fieldSet');
-  for (var inputNumber = 0; inputNumber < window.form.inputs.length; inputNumber++) {
-    window.form.inputs[inputNumber].disabled = true;
+  inputs = document.querySelectorAll('fieldSet');
+  for (var inputNumber = 0; inputNumber < inputs.length; inputNumber++) {
+    inputs[inputNumber].disabled = true;
   }
 
   var roomNumberInput = document.querySelector('#room_number');
@@ -20,10 +19,10 @@
   var inputTimeout = document.querySelector('#timeout');
 
   typeInput.addEventListener('change', function (evt) {
-    for (var caseNum = 0; caseNum < window.data.OFFER_OPTIONS.types.length; caseNum++) {
-      if (evt.target.value === window.data.OFFER_OPTIONS.types[caseNum]) {
-        priceInput.placeholder = window.data.OFFER_OPTIONS.minPrice[caseNum];
-        priceInput.min = window.data.OFFER_OPTIONS.minPrice[caseNum];
+    for (var caseNum = 0; caseNum < CONS.OFFER_OPTIONS.types.length; caseNum++) {
+      if (evt.target.value === CONS.OFFER_OPTIONS.types[caseNum]) {
+        priceInput.placeholder = CONS.OFFER_OPTIONS.minPrice[caseNum];
+        priceInput.min = CONS.OFFER_OPTIONS.minPrice[caseNum];
       }
     }
   });
@@ -43,15 +42,15 @@
 
   var getRoomInfo = function (roomNum) {
     var roomOption = document.createElement('option');
-    roomOption.value = window.data.ROOM_OPTIONS[roomNum].rooms;
-    roomOption.text = window.data.ROOM_OPTIONS[roomNum].label;
-    roomOption.label = window.data.ROOM_OPTIONS[roomNum].label;
+    roomOption.value = CONS.ROOM_OPTIONS[roomNum].rooms;
+    roomOption.text = CONS.ROOM_OPTIONS[roomNum].label;
+    roomOption.label = CONS.ROOM_OPTIONS[roomNum].label;
     capacityInput.appendChild(roomOption);
   };
 
   roomNumberInput.addEventListener('change', function (evt) {
     removeOptions();
-    var rooms = window.data.ROOMS_AMOUNT_VALUES[evt.target.value];
+    var rooms = CONS.ROOMS_AMOUNT_VALUES[evt.target.value];
     for (var room = 0; room < rooms.length; room++) {
       getRoomInfo(rooms[room]);
     }
@@ -62,6 +61,14 @@
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     form.reset();
-    window.form.addressInput.value = window.pin.mainActiveLocation.x + ', ' + window.pin.mainActiveLocation.y;
+    removeOptions();
+    getRoomInfo(CONS.ROOMS_AMOUNT_VALUES['1']);
+    priceInput.placeholder = CONS.OFFER_OPTIONS.minPrice[0];
+    priceInput.min = CONS.OFFER_OPTIONS.minPrice[0];
+    addressInput.value = window.pin.mainActiveLocation().x + ', ' + window.pin.mainActiveLocation().y;
   });
+  window.form = {
+    addressInput: addressInput,
+    inputs: inputs
+  };
 })();
