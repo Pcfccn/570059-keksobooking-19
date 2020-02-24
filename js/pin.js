@@ -1,7 +1,6 @@
 'use strict';
 (function () {
   var CONST = window.data.CONST;
-  var offers = window.data.offers;
   var mapPinMain = document.querySelector('.map__pin--main');
   var getPinLocation = function () {
     var location = {
@@ -14,8 +13,6 @@
   var getFragmentWithPin = function (offerElement) {
     var pinTemplate = document.querySelector('#pin').content;
     var pinElement = pinTemplate.cloneNode(true);
-    console.log(window.data.offers);
-    console.log(offerElement);
     pinElement.querySelector('.map__pin').style.left = (offerElement.location.x) + 'px';
     pinElement.querySelector('.map__pin').style.top = (offerElement.location.y) + 'px';
     pinElement.querySelector('img').src = offerElement.author.avatar;
