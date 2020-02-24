@@ -41,10 +41,10 @@
     return cardsFragments;
   };
 
-  data.getNewOffers();
-  var cardsFragment = getFragmentWithCards(data.offers);
-  var mapFiltersContainer = document.querySelector('.map .map__filters-container');
-  document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
+  // data.getNewOffers();
+  // var cardsFragment = getFragmentWithCards(data.offers);
+  // var mapFiltersContainer = document.querySelector('.map .map__filters-container');
+  // document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
 
   var onCardEscPress = function (evt) {
     if (evt.key === CONST.ESC_KEY) {
@@ -79,7 +79,8 @@
       for (var shNum = 1; shNum <= data.offers.length; shNum++) {
         showOffercard(shNum);
       }
-    }
+    },
+    getFragmentWithCards: getFragmentWithCards
   };
 
 })();

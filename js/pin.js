@@ -14,8 +14,10 @@
   var getFragmentWithPin = function (offerElement) {
     var pinTemplate = document.querySelector('#pin').content;
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.querySelector('.map__pin').style.left = (offerElement.offer.location.x) + 'px';
-    pinElement.querySelector('.map__pin').style.top = (offerElement.offer.location.y) + 'px';
+    console.log(window.data.offers);
+    console.log(offerElement);
+    pinElement.querySelector('.map__pin').style.left = (offerElement.location.x) + 'px';
+    pinElement.querySelector('.map__pin').style.top = (offerElement.location.y) + 'px';
     pinElement.querySelector('img').src = offerElement.author.avatar;
     pinElement.querySelector('img').alt = offerElement.offer.title;
     return pinElement;
@@ -33,10 +35,10 @@
     return loc;
   };
 
-  var addFragmentWithPinsToPage = function (bookingOffers) {
+  var addFragmentWithPinsToPage = function (offersList) {
     var Fragment = document.createDocumentFragment();
-    for (var m = 0; m < bookingOffers.length; m++) {
-      Fragment.appendChild(getFragmentWithPin(offers[m]));
+    for (var m = 0; m < offersList.length; m++) {
+      Fragment.appendChild(getFragmentWithPin(offersList[m]));
     }
     document.querySelector('.map__pins').appendChild(Fragment);
   };
