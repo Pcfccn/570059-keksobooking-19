@@ -1,21 +1,21 @@
 'use strict';
 (function () {
   var pin = window.pin.main;
-  var CONS = window.data.CONS;
+  var CONST = window.data.CONST;
   var mapMainPinRightmostX = window.data.mapMainPinRightmostX;
   var dragged = false;
   var startCoords = {x: '', y: ''};
 
   var checkPinPosition = function () {
-    if (pin.offsetLeft > (mapMainPinRightmostX + CONS.MAP_MAIN_PIN_WIDTH / 2)) {
-      pin.style.left = (mapMainPinRightmostX + CONS.MAP_MAIN_PIN_WIDTH / 2) + 'px';
-    } else if (pin.offsetLeft < (-CONS.MAP_MAIN_PIN_WIDTH / 2)) {
-      pin.style.left = (-CONS.MAP_MAIN_PIN_WIDTH / 2) + 'px';
+    if (pin.offsetLeft > (mapMainPinRightmostX + CONST.MAP_MAIN_PIN_WIDTH / 2)) {
+      pin.style.left = (mapMainPinRightmostX + CONST.MAP_MAIN_PIN_WIDTH / 2) + 'px';
+    } else if (pin.offsetLeft < (-CONST.MAP_MAIN_PIN_WIDTH / 2)) {
+      pin.style.left = (-CONST.MAP_MAIN_PIN_WIDTH / 2) + 'px';
     }
-    if (pin.offsetTop < CONS.MAP_PIN_UPPER_Y) {
-      pin.style.top = CONS.MAP_PIN_UPPER_Y + 'px';
-    } else if (pin.offsetTop > CONS.MAP_PIN_LOWER_Y) {
-      pin.style.top = CONS.MAP_PIN_LOWER_Y + 'px';
+    if (pin.offsetTop < CONST.MAP_PIN_UPPER_Y) {
+      pin.style.top = CONST.MAP_PIN_UPPER_Y + 'px';
+    } else if (pin.offsetTop > CONST.MAP_PIN_LOWER_Y) {
+      pin.style.top = CONST.MAP_PIN_LOWER_Y + 'px';
     }
   };
 
@@ -51,7 +51,7 @@
       getPinPosition(upEvt);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
-      window.form.addressInput.value = window.pin.mainActiveLocation().x + ', ' + (window.pin.mainActiveLocation().y - CONS.MAP_MAIN_PIN_HEIGHT);
+      window.form.addressInput.value = window.pin.mainActiveLocation().x + ', ' + (window.pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();

@@ -77,8 +77,8 @@
   };
 
   var mapWithOffers = document.querySelector('.map');
-  var mapPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_PIN_WIDTH - 1;
-  var mapMainPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_MAIN_PIN_WIDTH - 1;
+  var mapPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_PIN_WIDTH;
+  var mapMainPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_MAIN_PIN_WIDTH;
   var getNewOffers = function () {
     for (var l = 0; l < DATA.NUMBER_OF_OFFERS; l++) {
       var numberOfRooms = getRandomValue(1, 10);
@@ -106,7 +106,7 @@
     }
   };
   window.data = {
-    CONS: DATA,
+    CONST: DATA,
     offers: offers,
     getRandomValue: getRandomValue,
     getNewOffers: getNewOffers,

@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var CONS = window.data.CONS;
+  var CONST = window.data.CONST;
   var offers = window.data.offers;
   var mapPinMain = document.querySelector('.map__pin--main');
   var getPinLocation = function () {
@@ -22,14 +22,14 @@
   };
 
   var mainStartLocation = {
-    x: getPinLocation().x + Math.round(CONS.MAP_MAIN_PIN_WIDTH / 2),
-    y: getPinLocation().y + Math.round(CONS.MAP_MAIN_PIN_WIDTH / 2)
+    x: getPinLocation().x + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2),
+    y: getPinLocation().y + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)
   };
 
   var mainActiveLocation = function () {
     var loc = {
-      x: getPinLocation().x + Math.round(CONS.MAP_MAIN_PIN_WIDTH / 2),
-      y: getPinLocation().y + CONS.MAP_MAIN_PIN_HEIGHT};
+      x: getPinLocation().x + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2),
+      y: getPinLocation().y + CONST.MAP_MAIN_PIN_HEIGHT};
     return loc;
   };
 
@@ -42,12 +42,12 @@
   };
 
   var onEnterKeyMain = function (evt) {
-    if (evt.key === CONS.ENTER_KEY) {
+    if (evt.key === CONST.ENTER_KEY) {
       window.map.activate();
     }
   };
   var onLeftMouseButtonMain = function (evt) {
-    if (evt.button === CONS.LEFT_CLICK_CODE) {
+    if (evt.button === CONST.LEFT_CLICK_CODE) {
       window.map.activate();
     }
   };
