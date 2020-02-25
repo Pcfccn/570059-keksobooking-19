@@ -7,8 +7,8 @@
   var form = window.form;
   var activate = function () {
     window.backend.load(function (offrs) {
-      window.data.offers = offrs;
-      data.getNewOffers();
+      data.offers = offrs;
+      // data.getNewOffers();
       var cardsFragment = window.card.getFragmentWithCards(data.offers);
       var mapFiltersContainer = document.querySelector('.map .map__filters-container');
       document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);

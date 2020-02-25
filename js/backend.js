@@ -4,7 +4,7 @@
   window.backend = {
     load: function (onLoad, onError) {
       onError = function (message) {
-        console.error(message);
+        return message;
       };
       var url = 'https://js.dump.academy/keksobooking/data';
       var xhr = new XMLHttpRequest();
