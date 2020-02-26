@@ -5,6 +5,7 @@
   var data = window.data;
   var pin = window.pin;
   var form = window.form;
+
   var activate = function () {
     window.backend.load(function (offrs) {
       data.offers = offrs;
@@ -26,6 +27,10 @@
       pin.main.removeEventListener('mousedown', pin.onLeftMouseButtonMain);
       pin.main.removeEventListener('keydown', pin.onEnterKeyMain);
     }
+    // ,
+    // function (message) {
+    //   console.log(message);
+    // }
     );
   };
   window.map = {
