@@ -1,7 +1,6 @@
 'use strict';
 (function () {
-  var CONS = window.data.CONS;
-  var offers = window.data.offers;
+  var CONST = window.data.CONST;
   var mapPinMain = document.querySelector('.map__pin--main');
   var getPinLocation = function () {
     var location = {
@@ -14,40 +13,40 @@
   var getFragmentWithPin = function (offerElement) {
     var pinTemplate = document.querySelector('#pin').content;
     var pinElement = pinTemplate.cloneNode(true);
-    pinElement.querySelector('.map__pin').style.left = (offerElement.offer.location.x) + 'px';
-    pinElement.querySelector('.map__pin').style.top = (offerElement.offer.location.y) + 'px';
+    pinElement.querySelector('.map__pin').style.left = (offerElement.location.x) + 'px';
+    pinElement.querySelector('.map__pin').style.top = (offerElement.location.y) + 'px';
     pinElement.querySelector('img').src = offerElement.author.avatar;
     pinElement.querySelector('img').alt = offerElement.offer.title;
     return pinElement;
   };
 
   var mainStartLocation = {
-    x: getPinLocation().x + Math.round(CONS.MAP_MAIN_PIN_WIDTH / 2),
-    y: getPinLocation().y + Math.round(CONS.MAP_MAIN_PIN_WIDTH / 2)
+    x: getPinLocation().x + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2),
+    y: getPinLocation().y + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)
   };
 
   var mainActiveLocation = function () {
     var loc = {
-      x: getPinLocation().x + Math.round(CONS.MAP_MAIN_PIN_WIDTH / 2),
-      y: getPinLocation().y + CONS.MAP_MAIN_PIN_HEIGHT};
+      x: getPinLocation().x + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2),
+      y: getPinLocation().y + CONST.MAP_MAIN_PIN_HEIGHT};
     return loc;
   };
 
-  var addFragmentWithPinsToPage = function (bookingOffers) {
+  var addFragmentWithPinsToPage = function (offersList) {
     var Fragment = document.createDocumentFragment();
-    for (var m = 0; m < bookingOffers.length; m++) {
-      Fragment.appendChild(getFragmentWithPin(offers[m]));
+    for (var m = 0; m < offersList.length; m++) {
+      Fragment.appendChild(getFragmentWithPin(offersList[m]));
     }
     document.querySelector('.map__pins').appendChild(Fragment);
   };
 
   var onEnterKeyMain = function (evt) {
-    if (evt.key === CONS.ENTER_KEY) {
+    if (evt.key === CONST.ENTER_KEY) {
       window.map.activate();
     }
   };
   var onLeftMouseButtonMain = function (evt) {
-    if (evt.button === CONS.LEFT_CLICK_CODE) {
+    if (evt.button === CONST.LEFT_CLICK_CODE) {
       window.map.activate();
     }
   };

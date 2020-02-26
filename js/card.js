@@ -1,16 +1,52 @@
 'use strict';
 (function () {
   var data = window.data;
-  var CONS = window.data.CONS;
-  var addPhotos = function (elementCard, offerCard) {
+  var CONST = window.data.CONST;
+
+  var addMorePhotos = function (offerCard, elementCard) {
     for (var n = 1; n < offerCard.offer.photos.length; n++) {
       var newElement = document.createElement('img');
       newElement.src = offerCard.offer.photos[n];
       newElement.classList.add('popup__photo');
-      newElement.width = CONS.OFFER_PHOTO_WIDTH;
-      newElement.height = CONS.OFFER_PHOTO_HEIGHT;
+      newElement.width = CONST.OFFER_PHOTO_WIDTH;
+      newElement.height = CONST.OFFER_PHOTO_HEIGHT;
       newElement.alt = 'Фотография жилья ' + (n + 1);
       elementCard.querySelector('.popup__photos').appendChild(newElement);
+    }
+  };
+
+  var addPhotos = function (ofCard, elCard) {
+    if (ofCard.offer.photos.length) {
+      elCard.querySelector('.popup__photos img').src = ofCard.offer.photos[0];
+      if (ofCard.offer.photos.length > 1) {
+        addMorePhotos(ofCard, elCard);
+      }
+    } else {
+      elCard.querySelector('.popup__photos').remove();
+    }
+  };
+
+  var checkFeatures = function (ofrCard, cardEl) {
+    var featuresAvailability = [0, 0, 0, 0, 0, 0];
+    var offerFeatures = [
+      cardEl.querySelector('.popup__feature.popup__feature--wifi'),
+      cardEl.querySelector('.popup__feature.popup__feature--dishwasher'),
+      cardEl.querySelector('.popup__feature.popup__feature--parking'),
+      cardEl.querySelector('.popup__feature.popup__feature--washer'),
+      cardEl.querySelector('.popup__feature.popup__feature--elevator'),
+      cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
+    ];
+    for (var frdsc = 0; frdsc < ofrCard.offer.description.length; frdsc++) {
+      for (var frnum = 0; frnum < CONST.OFFERS_FEATURES.length; frnum++) {
+        if (ofrCard.offer.features[frdsc] === CONST.OFFERS_FEATURES[frnum]) {
+          featuresAvailability[frnum] = 1;
+        }
+      }
+    }
+    for (var opn = 0; opn < featuresAvailability.length; opn++) {
+      if (!featuresAvailability[opn]) {
+        offerFeatures[opn].remove();
+      }
     }
   };
 
@@ -20,15 +56,16 @@
     cardElement.querySelector('.popup__title').textContent = offerCard.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = offerCard.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = offerCard.offer.price + '₽/ночь';
-    cardElement.querySelector('.popup__type').textContent = CONS.TEXT_OFFERS_TYPE[offerCard.offer.type];
+    cardElement.querySelector('.popup__type').textContent = CONST.TEXT_OFFERS_TYPE[offerCard.offer.type];
     cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
-    cardElement.querySelector('.popup__features').textContent = offerCard.offer.features;
+
+    checkFeatures(offerCard, cardElement);
+
     cardElement.querySelector('.popup__description').textContent = offerCard.offer.description;
-    cardElement.querySelector('.popup__photos img').src = offerCard.offer.photos[0];
-    if (offerCard.offer.photos.length > 1) {
-      addPhotos(cardElement, offerCard);
-    }
+
+    addPhotos(offerCard, cardElement);
+
     cardElement.querySelector('.popup__avatar').src = offerCard.author.avatar;
     return cardElement;
   };
@@ -41,13 +78,8 @@
     return cardsFragments;
   };
 
-  data.getNewOffers();
-  var cardsFragment = getFragmentWithCards(data.offers);
-  var mapFiltersContainer = document.querySelector('.map .map__filters-container');
-  document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
-
   var onCardEscPress = function (evt) {
-    if (evt.key === CONS.ESC_KEY) {
+    if (evt.key === CONST.ESC_KEY) {
       hideAllCards();
     }
   };
@@ -64,7 +96,7 @@
 
   var showOffercard = function (num) {
     data.offerPin[num].addEventListener('click', function (evt) {
-      if (evt.button === CONS.LEFT_CLICK_CODE || evt.key === CONS.ENTER_KEY) {
+      if (evt.button === CONST.LEFT_CLICK_CODE || evt.key === CONST.ENTER_KEY) {
         hideAllCards();
         data.offerCard[num - 1].classList.remove('hidden');
         document.addEventListener('keydown', onCardEscPress);
@@ -79,7 +111,8 @@
       for (var shNum = 1; shNum <= data.offers.length; shNum++) {
         showOffercard(shNum);
       }
-    }
+    },
+    getFragmentWithCards: getFragmentWithCards
   };
 
 })();
