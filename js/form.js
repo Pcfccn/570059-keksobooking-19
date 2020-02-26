@@ -3,8 +3,9 @@
   var CONST = window.data.CONST;
   var addressInput = document.querySelector('#address');
   var inputs = document.querySelectorAll('fieldSet');
+  var pin = window.pin;
 
-  addressInput.value = window.pin.mainStartLocation.x + ', ' + (window.pin.mainStartLocation.y - CONST.MAP_MAIN_PIN_HEIGHT);
+  addressInput.value = pin.mainStartLocation.x + ', ' + (pin.mainStartLocation.y - CONST.MAP_MAIN_PIN_HEIGHT);
 
   inputs = document.querySelectorAll('fieldSet');
   for (var inputNumber = 0; inputNumber < inputs.length; inputNumber++) {
@@ -65,7 +66,7 @@
     getRoomInfo(CONST.ROOMS_AMOUNT_VALUES['1']);
     priceInput.placeholder = CONST.OFFER_OPTIONS.minPrice[0];
     priceInput.min = CONST.OFFER_OPTIONS.minPrice[0];
-    addressInput.value = window.pin.mainActiveLocation().x + ', ' + (window.pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
+    addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
   });
   window.form = {
     addressInput: addressInput,
