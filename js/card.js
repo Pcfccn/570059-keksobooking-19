@@ -2,7 +2,8 @@
 (function () {
   var data = window.data;
   var CONST = window.data.CONST;
-  var addPhotos = function (elementCard, offerCard) {
+
+  var addMorePhotos = function (offerCard, elementCard) {
     for (var n = 1; n < offerCard.offer.photos.length; n++) {
       var newElement = document.createElement('img');
       newElement.src = offerCard.offer.photos[n];
@@ -11,6 +12,17 @@
       newElement.height = CONST.OFFER_PHOTO_HEIGHT;
       newElement.alt = 'Фотография жилья ' + (n + 1);
       elementCard.querySelector('.popup__photos').appendChild(newElement);
+    }
+  };
+
+  var addPhotos = function (ofCard, elCard) {
+    if (ofCard.offer.photos.length) {
+      elCard.querySelector('.popup__photos img').src = ofCard.offer.photos[0];
+      if (ofCard.offer.photos.length > 1) {
+        addMorePhotos(ofCard, elCard);
+      }
+    } else {
+      elCard.querySelector('.popup__photos').remove();
     }
   };
 
@@ -51,10 +63,9 @@
     checkFeatures(offerCard, cardElement);
 
     cardElement.querySelector('.popup__description').textContent = offerCard.offer.description;
-    cardElement.querySelector('.popup__photos img').src = offerCard.offer.photos[0];
-    if (offerCard.offer.photos.length > 1) {
-      addPhotos(cardElement, offerCard);
-    }
+
+    addPhotos(offerCard, cardElement);
+
     cardElement.querySelector('.popup__avatar').src = offerCard.author.avatar;
     return cardElement;
   };
