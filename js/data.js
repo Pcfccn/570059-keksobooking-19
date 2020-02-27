@@ -68,6 +68,26 @@
     return genetivePlural;
   };
 
+
+  var closeErrorPopup = function () {
+    document.querySelector('.error__button').removeEventListener('mousedown', errorButtonHandler);
+    document.querySelector('.error__button').removeEventListener('keydown', errorButtonHandler);
+    document.removeEventListener('keydown', onEscrKeyPopupButton);
+    document.querySelector('.error').remove();
+  };
+
+  var errorButtonHandler = function (evt) {
+    if (evt.button === DATA.LEFT_CLICK_CODE || evt.key === DATA.ENTER_KEY) {
+      closeErrorPopup();
+    }
+  };
+
+  var onEscrKeyPopupButton = function (evt) {
+    if (evt.key === DATA.ESC_KEY) {
+      closeErrorPopup();
+    }
+  };
+
   var mapWithOffers = document.querySelector('.map');
   var mapMainPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_MAIN_PIN_WIDTH;
 
@@ -76,6 +96,8 @@
     offers: offers,
     getRandomValue: getRandomValue,
     mapMainPinRightmostX: mapMainPinRightmostX,
-    numDecline: numDecline
+    numDecline: numDecline,
+    errorButtonHandler: errorButtonHandler,
+    onEscrKeyPopupButton: onEscrKeyPopupButton
   };
 })();

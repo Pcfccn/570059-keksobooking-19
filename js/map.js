@@ -8,23 +8,26 @@
   var card = window.card;
   var load = window.backend.load;
 
-  var closePopup = function () {
-    document.querySelector('.error__button').removeEventListener('mousedown', errorButtonHandler);
-    document.querySelector('.error__button').removeEventListener('keydown', errorButtonHandler);
-    document.removeEventListener('keydown', onEscrKeyPopupButton);
-    document.querySelector('.error').remove();
-  };
 
-  var errorButtonHandler = function (evt) {
-    if (evt.button === CONST.LEFT_CLICK_CODE || evt.key === CONST.ENTER_KEY) {
-      closePopup();
+  var disactivate = function () {
+    var offerPin = document.querySelectorAll('.map__pin');
+    for (var pn = offerPin.length; pn > 1; pn--) {
+      offerPin[pn - 1].remove();
     }
-  };
-
-  var onEscrKeyPopupButton = function (evt) {
-    if (evt.key === CONST.ESC_KEY) {
-      closePopup();
+    var mapCard = document.querySelectorAll('.map__card');
+    for (var cn = mapCard.length; cn > 0; cn--) {
+      mapCard[cn - 1].remove();
     }
+    for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
+      form.inputs[inputNumb].disabled = true;
+    }
+    mapWithOffers.classList.add('map--faded');
+    document.querySelector('.ad-form').classList.add('ad-form--disabled');
+    pin.main.style.left = (pin.mainStartLocation.x - Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)) + 'px';
+    pin.main.style.top = (pin.mainStartLocation.y - Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)) + 'px';
+    form.addressInput.value = pin.mainStartLocation.x + ', ' + pin.mainStartLocation.y;
+    pin.main.addEventListener('mousedown', pin.onLeftMouseButtonMain);
+    pin.main.addEventListener('keydown', pin.onEnterKeyMain);
   };
 
   var activate = function () {
@@ -53,9 +56,9 @@
           var errorPopupTemplate = document.querySelector('#error').content;
           var errorPopup = errorPopupTemplate.cloneNode(true);
           errorPopup.querySelector('.error__message').textContent = err;
-          errorPopup.querySelector('.error__button').addEventListener('mousedown', errorButtonHandler);
-          errorPopup.querySelector('.error__button').addEventListener('keydown', errorButtonHandler);
-          document.addEventListener('keydown', onEscrKeyPopupButton);
+          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.errorButtonHandler);
+          errorPopup.querySelector('.error__button').addEventListener('keydown', data.errorButtonHandler);
+          document.addEventListener('keydown', data.onEscrKeyPopupButton);
           var fragment = document.createDocumentFragment();
           fragment.appendChild(errorPopup);
           document.body.prepend(fragment);
@@ -63,6 +66,7 @@
     );
   };
   window.map = {
-    activate: activate
+    activate: activate,
+    disactivate: disactivate
   };
 })();

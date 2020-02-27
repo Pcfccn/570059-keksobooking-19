@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var CONST = window.data.CONST;
+  var data = window.data;
   var addressInput = document.querySelector('#address');
   var inputs = document.querySelectorAll('fieldSet');
   var pin = window.pin;
@@ -58,16 +59,68 @@
   });
 
   var form = document.querySelector('.ad-form');
-  var resetButton = document.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', function (evt) {
-    evt.preventDefault();
+  var resetForm = function () {
     form.reset();
     removeOptions();
     getRoomInfo(CONST.ROOMS_AMOUNT_VALUES['1']);
     priceInput.placeholder = CONST.OFFER_OPTIONS.minPrice[0];
     priceInput.min = CONST.OFFER_OPTIONS.minPrice[0];
     addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
+  };
+  var resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    resetForm();
   });
+
+
+  var closeSuccessPopup = function () {
+    document.removeEventListener('click', successPopupHandler);
+    document.removeEventListener('keydown', onEscrKeyPopupButton);
+    document.querySelector('.success').remove();
+  };
+  var successPopupHandler = function (evt) {
+    if (evt.button === CONST.LEFT_CLICK_CODE) {
+      closeSuccessPopup();
+    }
+  };
+  var onEscrKeyPopupButton = function (evt) {
+    if (evt.key === CONST.ESC_KEY) {
+      closeSuccessPopup();
+    }
+  };
+
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.upload(
+        new FormData(form),
+        function () {
+          resetForm();
+          window.map.disactivate();
+          var successPopupTemplate = document.querySelector('#success').content;
+          var successPopup = successPopupTemplate.cloneNode(true);
+          var fragment = document.createDocumentFragment();
+          fragment.appendChild(successPopup);
+          document.body.prepend(fragment);
+          document.addEventListener('click', successPopupHandler);
+          document.addEventListener('keydown', onEscrKeyPopupButton);
+        },
+        function (err) {
+          var errorPopupTemplate = document.querySelector('#error').content;
+          var errorPopup = errorPopupTemplate.cloneNode(true);
+          errorPopup.querySelector('.error__message').textContent = err;
+          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.errorButtonHandler);
+          errorPopup.querySelector('.error__button').addEventListener('keydown', data.errorButtonHandler);
+          document.addEventListener('keydown', data.onEscrKeyPopupButton);
+          var fragment = document.createDocumentFragment();
+          fragment.appendChild(errorPopup);
+          document.body.prepend(fragment);
+        }
+    );
+  });
+
+
   window.form = {
     addressInput: addressInput,
     inputs: inputs
