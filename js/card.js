@@ -73,7 +73,9 @@
   var getFragmentWithCards = function (offerCards) {
     var cardsFragments = document.createDocumentFragment();
     for (var num = 0; num < offerCards.length; num++) {
-      cardsFragments.appendChild(getCardElement(data.offers[num]));
+      if (data.offers[num].offer) {
+        cardsFragments.appendChild(getCardElement(data.offers[num]));
+      }
     }
     return cardsFragments;
   };
