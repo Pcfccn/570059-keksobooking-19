@@ -36,7 +36,7 @@
       cardEl.querySelector('.popup__feature.popup__feature--elevator'),
       cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
     ];
-    for (var frdsc = 0; frdsc < ofrCard.offer.description.length; frdsc++) {
+    for (var frdsc = 0; frdsc < ofrCard.offer.features.length; frdsc++) {
       for (var frnum = 0; frnum < CONST.OFFERS_FEATURES.length; frnum++) {
         if (ofrCard.offer.features[frdsc] === CONST.OFFERS_FEATURES[frnum]) {
           featuresAvailability[frnum] = 1;
