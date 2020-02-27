@@ -16,23 +16,13 @@
   var getResponse = function (xhr, onSuccessFunc, onErrorFunc) {
     var error;
     switch (xhr.status) {
-      case STATUS.OK:
-        onSuccessFunc(xhr.response);
-        break;
-      case STATUS.BAD_REQUEST:
-        error = 'Неверный запрос';
-        break;
-      case STATUS.UNAUTHORIZED:
-        error = 'Пользователь не авторизован';
-        break;
-      case STATUS.NOT_FOUND:
-        error = 'При запросе на сервер не найдено объявлений';
-        break;
+      case STATUS.OK: onSuccessFunc(xhr.response); break;
+      case STATUS.BAD_REQUEST: error = 'Неверный запрос'; break;
+      case STATUS.UNAUTHORIZED: error = 'Пользователь не авторизован'; break;
+      case STATUS.NOT_FOUND: error = 'При запросе на сервер не найдено объявлений'; break;
       case STATUS.INTERNAL_SERVER_ERROR:
-        error = '"Внутренняя ошибка сервера". Сервер столкнулся с ситуацией, которую он не знает как обработать. ';
-        break;
-      default:
-        error = 'Cтатус ответа: : ' + xhr.status + ' ' + xhr.statusText;
+        error = '"Внутренняя ошибка сервера". Сервер столкнулся с ситуацией, которую он не знает как обработать. '; break;
+      default: error = 'Cтатус ответа: : ' + xhr.status + ' ' + xhr.statusText;
     }
     if (error) {
       onErrorFunc(error);

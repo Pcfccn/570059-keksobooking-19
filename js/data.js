@@ -54,6 +54,20 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
+  var numDecline = function (num, nominative, genetiveSingular, genetivePlural) {
+    if (num > 10 && (Math.round((num % 100) / 10)) === 1) {
+      return genetivePlural;
+    } else {
+      switch (num % 10) {
+        case 1: return nominative;
+        case 2:
+        case 3:
+        case 4: return genetiveSingular;
+      }
+    }
+    return genetivePlural;
+  };
+
   var mapWithOffers = document.querySelector('.map');
   var mapMainPinRightmostX = mapWithOffers.offsetWidth - DATA.MAP_MAIN_PIN_WIDTH;
 
@@ -61,7 +75,7 @@
     CONST: DATA,
     offers: offers,
     getRandomValue: getRandomValue,
-    mapMainPinRightmostX: mapMainPinRightmostX
+    mapMainPinRightmostX: mapMainPinRightmostX,
+    numDecline: numDecline
   };
 })();
-
