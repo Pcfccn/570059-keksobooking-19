@@ -15,17 +15,6 @@
     }
   };
 
-  var addPhotos = function (ofCard, elCard) {
-    if (ofCard.offer.photos.length) {
-      elCard.querySelector('.popup__photos img').src = ofCard.offer.photos[0];
-      if (ofCard.offer.photos.length > 1) {
-        addMorePhotos(ofCard, elCard);
-      }
-    } else {
-      elCard.querySelector('.popup__photos').remove();
-    }
-  };
-
   var cleanFeatures = function (ofrCard, cardEl) {
     var offerFeatures = {
       'wifi': cardEl.querySelector('.popup__feature.popup__feature--wifi'),
@@ -63,7 +52,14 @@
 
     cardElement.querySelector('.popup__description').textContent = offerCard.offer.description;
 
-    addPhotos(offerCard, cardElement);
+    if (offerCard.offer.photos.length) {
+      cardElement.querySelector('.popup__photos img').src = offerCard.offer.photos[0];
+      if (offerCard.offer.photos.length > 1) {
+        addMorePhotos(offerCard, cardElement);
+      }
+    } else {
+      cardElement.querySelector('.popup__photos').remove();
+    }
 
     cardElement.querySelector('.popup__avatar').src = offerCard.author.avatar;
     return cardElement;
