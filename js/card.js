@@ -26,27 +26,26 @@
     }
   };
 
-  var checkFeatures = function (ofrCard, cardEl) {
-    var featuresAvailability = [0, 0, 0, 0, 0, 0];
-    var offerFeatures = [
-      cardEl.querySelector('.popup__feature.popup__feature--wifi'),
-      cardEl.querySelector('.popup__feature.popup__feature--dishwasher'),
-      cardEl.querySelector('.popup__feature.popup__feature--parking'),
-      cardEl.querySelector('.popup__feature.popup__feature--washer'),
-      cardEl.querySelector('.popup__feature.popup__feature--elevator'),
-      cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
-    ];
-    for (var frdsc = 0; frdsc < ofrCard.offer.features.length; frdsc++) {
-      for (var frnum = 0; frnum < CONST.OFFERS_FEATURES.length; frnum++) {
-        if (ofrCard.offer.features[frdsc] === CONST.OFFERS_FEATURES[frnum]) {
-          featuresAvailability[frnum] = 1;
+  var cleanFeatures = function (ofrCard, cardEl) {
+    var offerFeatures = {
+      'wifi': cardEl.querySelector('.popup__feature.popup__feature--wifi'),
+      'dishwasher': cardEl.querySelector('.popup__feature.popup__feature--dishwasher'),
+      'parking': cardEl.querySelector('.popup__feature.popup__feature--parking'),
+      'washer': cardEl.querySelector('.popup__feature.popup__feature--washer'),
+      'elevator': cardEl.querySelector('.popup__feature.popup__feature--elevator'),
+      'conditioner': cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
+    };
+    if (ofrCard.offer.features.length) {
+      for (var frnum = 0; frnum < ofrCard.offer.features.length; frnum++) {
+        offerFeatures[ofrCard.offer.features[frnum]] = null;
+      }
+      for (var i = 0; i < CONST.OFFERS_FEATURES.length; i++) {
+        if (offerFeatures[CONST.OFFERS_FEATURES[i]]) {
+          offerFeatures[CONST.OFFERS_FEATURES[i]].remove();
         }
       }
-    }
-    for (var opn = 0; opn < featuresAvailability.length; opn++) {
-      if (!featuresAvailability[opn]) {
-        offerFeatures[opn].remove();
-      }
+    } else {
+      cardEl.querySelector('.popup__features').remove();
     }
   };
 
@@ -60,7 +59,7 @@
     cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
 
-    checkFeatures(offerCard, cardElement);
+    cleanFeatures(offerCard, cardElement);
 
     cardElement.querySelector('.popup__description').textContent = offerCard.offer.description;
 
