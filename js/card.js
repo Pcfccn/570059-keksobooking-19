@@ -15,38 +15,26 @@
     }
   };
 
-  var addPhotos = function (ofCard, elCard) {
-    if (ofCard.offer.photos.length) {
-      elCard.querySelector('.popup__photos img').src = ofCard.offer.photos[0];
-      if (ofCard.offer.photos.length > 1) {
-        addMorePhotos(ofCard, elCard);
+  var cleanFeatures = function (ofrCard, cardEl) {
+    var offerFeatures = {
+      'wifi': cardEl.querySelector('.popup__feature.popup__feature--wifi'),
+      'dishwasher': cardEl.querySelector('.popup__feature.popup__feature--dishwasher'),
+      'parking': cardEl.querySelector('.popup__feature.popup__feature--parking'),
+      'washer': cardEl.querySelector('.popup__feature.popup__feature--washer'),
+      'elevator': cardEl.querySelector('.popup__feature.popup__feature--elevator'),
+      'conditioner': cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
+    };
+    if (ofrCard.offer.features.length) {
+      for (var frnum = 0; frnum < ofrCard.offer.features.length; frnum++) {
+        offerFeatures[ofrCard.offer.features[frnum]] = null;
       }
-    } else {
-      elCard.querySelector('.popup__photos').remove();
-    }
-  };
-
-  var checkFeatures = function (ofrCard, cardEl) {
-    var featuresAvailability = [0, 0, 0, 0, 0, 0];
-    var offerFeatures = [
-      cardEl.querySelector('.popup__feature.popup__feature--wifi'),
-      cardEl.querySelector('.popup__feature.popup__feature--dishwasher'),
-      cardEl.querySelector('.popup__feature.popup__feature--parking'),
-      cardEl.querySelector('.popup__feature.popup__feature--washer'),
-      cardEl.querySelector('.popup__feature.popup__feature--elevator'),
-      cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
-    ];
-    for (var frdsc = 0; frdsc < ofrCard.offer.description.length; frdsc++) {
-      for (var frnum = 0; frnum < CONST.OFFERS_FEATURES.length; frnum++) {
-        if (ofrCard.offer.features[frdsc] === CONST.OFFERS_FEATURES[frnum]) {
-          featuresAvailability[frnum] = 1;
+      for (var i = 0; i < CONST.OFFERS_FEATURES.length; i++) {
+        if (offerFeatures[CONST.OFFERS_FEATURES[i]]) {
+          offerFeatures[CONST.OFFERS_FEATURES[i]].remove();
         }
       }
-    }
-    for (var opn = 0; opn < featuresAvailability.length; opn++) {
-      if (!featuresAvailability[opn]) {
-        offerFeatures[opn].remove();
-      }
+    } else {
+      cardEl.querySelector('.popup__features').remove();
     }
   };
 
@@ -57,14 +45,25 @@
     cardElement.querySelector('.popup__text--address').textContent = offerCard.offer.address;
     cardElement.querySelector('.popup__text--price').textContent = offerCard.offer.price + '₽/ночь';
     cardElement.querySelector('.popup__type').textContent = CONST.TEXT_OFFERS_TYPE[offerCard.offer.type];
-    cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' комнаты для ' + offerCard.offer.guests + ' гостей';
-    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
+    cardElement.querySelector('.popup__text--capacity').textContent = offerCard.offer.rooms + ' '
+      + data.numDecline(offerCard.offer.rooms, 'комната', 'комнаты', 'комнат') + ' для '
+      + offerCard.offer.guests + ' ' + data.numDecline(offerCard.offer.guests, 'гостя', 'гостей', 'гостей');
 
-    checkFeatures(offerCard, cardElement);
+    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после '
+      + offerCard.offer.checkin + ', выезд до ' + offerCard.offer.checkout;
+
+    cleanFeatures(offerCard, cardElement);
 
     cardElement.querySelector('.popup__description').textContent = offerCard.offer.description;
 
-    addPhotos(offerCard, cardElement);
+    if (offerCard.offer.photos.length) {
+      cardElement.querySelector('.popup__photos img').src = offerCard.offer.photos[0];
+      if (offerCard.offer.photos.length > 1) {
+        addMorePhotos(offerCard, cardElement);
+      }
+    } else {
+      cardElement.querySelector('.popup__photos').remove();
+    }
 
     cardElement.querySelector('.popup__avatar').src = offerCard.author.avatar;
     return cardElement;
@@ -73,7 +72,9 @@
   var getFragmentWithCards = function (offerCards) {
     var cardsFragments = document.createDocumentFragment();
     for (var num = 0; num < offerCards.length; num++) {
-      cardsFragments.appendChild(getCardElement(data.offers[num]));
+      if (data.offers[num].offer) {
+        cardsFragments.appendChild(getCardElement(data.offers[num]));
+      }
     }
     return cardsFragments;
   };
