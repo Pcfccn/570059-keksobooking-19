@@ -48,6 +48,7 @@
           data.offerCard = document.querySelectorAll('.map__card.popup');
           data.offerPin = document.querySelectorAll('.map__pin');
           card.getPinsListener();
+          window.pin.dragPin();
           pin.main.removeEventListener('mousedown', pin.onLeftMouseButtonMain);
           pin.main.removeEventListener('keydown', pin.onEnterKeyMain);
         },
