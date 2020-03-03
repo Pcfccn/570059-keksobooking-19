@@ -72,8 +72,8 @@
   var getFragmentWithCards = function (offerCards) {
     var cardsFragments = document.createDocumentFragment();
     for (var num = 0; num < offerCards.length; num++) {
-      if (data.offers[num].offer) {
-        cardsFragments.appendChild(getCardElement(data.offers[num]));
+      if (offerCards[num].offer) {
+        cardsFragments.appendChild(getCardElement(offerCards[num]));
       }
     }
     return cardsFragments;
@@ -86,30 +86,34 @@
   };
 
   var hideAllCards = function () {
-    for (var offerCardNum = 0; offerCardNum < data.offerCard.length; offerCardNum++) {
-      if (!data.offerCard[offerCardNum].classList.contains('hidden')) {
-        data.offerCard[offerCardNum].classList.add('hidden');
+    var offerCard = document.querySelectorAll('.map__card.popup');
+    for (var offerCardNum = 0; offerCardNum < offerCard.length; offerCardNum++) {
+      if (!offerCard[offerCardNum].classList.contains('hidden')) {
+        offerCard[offerCardNum].classList.add('hidden');
       }
       document.removeEventListener('keydown', onCardEscPress);
-      data.offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
+      offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
     }
   };
 
   var showOffercard = function (num) {
-    data.offerPin[num].addEventListener('click', function (evt) {
+    var offerPin = document.querySelectorAll('.map__pin');
+    var offerCard = document.querySelectorAll('.map__card.popup');
+    offerPin[num].addEventListener('click', function (evt) {
       if (evt.button === CONST.LEFT_CLICK_CODE || evt.key === CONST.ENTER_KEY) {
         hideAllCards();
-        data.offerCard[num - 1].classList.remove('hidden');
+        offerCard[num - 1].classList.remove('hidden');
         document.addEventListener('keydown', onCardEscPress);
-        data.offerCard[num - 1].querySelector('.popup__close').addEventListener('click', hideAllCards);
+        offerCard[num - 1].querySelector('.popup__close').addEventListener('click', hideAllCards);
       }
     }
     );
   };
 
   window.card = {
-    getPinsListener: function () {
-      for (var shNum = 1; shNum <= data.offers.length; shNum++) {
+    getPinsListener: function (currentOffers) {
+      var shNumber = currentOffers.length > 5 ? 5 : currentOffers.length;
+      for (var shNum = 1; shNum <= shNumber; shNum++) {
         showOffercard(shNum);
       }
     },

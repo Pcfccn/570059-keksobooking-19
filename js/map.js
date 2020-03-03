@@ -2,22 +2,55 @@
 (function () {
   var CONST = window.data.CONST;
   var mapWithOffers = document.querySelector('.map');
+  var housingType = document.querySelector('#housing-type');
+  var mapFilters = document.querySelectorAll('.map__filter');
   var data = window.data;
   var pin = window.pin;
   var form = window.form;
   var card = window.card;
   var load = window.backend.load;
 
-
-  var disactivate = function () {
+  var delPin = function () {
     var offerPin = document.querySelectorAll('.map__pin');
     for (var pn = offerPin.length; pn > 1; pn--) {
       offerPin[pn - 1].remove();
     }
+  };
+
+  var delCard = function () {
     var mapCard = document.querySelectorAll('.map__card');
     for (var cn = mapCard.length; cn > 0; cn--) {
       mapCard[cn - 1].remove();
     }
+  };
+
+  var filterOut = function (offrs) {
+    var filteredOffers = offrs.slice();
+    var filterData = function () {
+      if (housingType.value === 'any') {
+        filteredOffers = offrs.slice();
+      } else {
+        filteredOffers = offrs.filter(function (offr) {
+          return offr.offer.type === housingType.value;
+        });
+      }
+      delPin();
+      delCard();
+      var cardsFragment = card.getFragmentWithCards(filteredOffers);
+      var mapFiltersContainer = document.querySelector('.map .map__filters-container');
+      document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
+      pin.addFragmentWithPinsToPage(filteredOffers);
+      card.getPinsListener(filteredOffers);
+    };
+    mapFilters.forEach(function () {
+      addEventListener('change', filterData);
+    });
+
+  };
+
+  var disactivate = function () {
+    delPin();
+    delCard();
     for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
       form.inputs[inputNumb].disabled = true;
     }
@@ -30,27 +63,26 @@
     pin.main.addEventListener('keydown', pin.onEnterKeyMain);
   };
 
+
   var activate = function () {
     load(
         function (offrs) {
-          data.offers = offrs;
-          var cardsFragment = card.getFragmentWithCards(data.offers);
+          var cardsFragment = card.getFragmentWithCards(offrs);
           var mapFiltersContainer = document.querySelector('.map .map__filters-container');
           document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
-
           for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
             form.inputs[inputNumb].disabled = false;
           }
           mapWithOffers.classList.remove('map--faded');
           document.querySelector('.ad-form').classList.remove('ad-form--disabled');
           form.addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
-          pin.addFragmentWithPinsToPage(data.offers);
-          data.offerCard = document.querySelectorAll('.map__card.popup');
-          data.offerPin = document.querySelectorAll('.map__pin');
-          card.getPinsListener();
+          pin.addFragmentWithPinsToPage(offrs);
+          card.getPinsListener(offrs);
           window.pin.dragPin();
           pin.main.removeEventListener('mousedown', pin.onLeftMouseButtonMain);
           pin.main.removeEventListener('keydown', pin.onEnterKeyMain);
+
+          filterOut(offrs);
         },
 
         function (err) {

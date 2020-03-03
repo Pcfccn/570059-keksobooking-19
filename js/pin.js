@@ -34,7 +34,9 @@
 
   var addFragmentWithPinsToPage = function (offersList) {
     var Fragment = document.createDocumentFragment();
-    for (var m = 0; m < offersList.length; m++) {
+    var offersNumber = offersList.length > 5 ? 5 : offersList.length;
+
+    for (var m = 0; m < offersNumber; m++) {
       Fragment.appendChild(getFragmentWithPin(offersList[m]));
     }
     document.querySelector('.map__pins').appendChild(Fragment);
