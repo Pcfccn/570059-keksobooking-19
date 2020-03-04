@@ -48,6 +48,7 @@
 
   var offers = [];
 
+
   var getRandomValue = function (min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -98,6 +99,6 @@
     mapMainPinRightmostX: mapMainPinRightmostX,
     numDecline: numDecline,
     errorButtonHandler: errorButtonHandler,
-    onEscrKeyPopupButton: onEscrKeyPopupButton
+    onEscrKeyPopupButton: onEscrKeyPopupButton,
   };
 })();
