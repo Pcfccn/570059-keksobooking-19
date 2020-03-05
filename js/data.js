@@ -43,7 +43,9 @@
     OFFER_OPTIONS: {
       types: ['bungalo', 'flat', 'house', 'palace'],
       minPrice: [0, 1000, 5000, 10000],
-    }
+    },
+    LOW_PRICE: 10000,
+    HIGH_PRICE: 50000
   };
 
   var offers = [];
