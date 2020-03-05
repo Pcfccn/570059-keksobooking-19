@@ -84,7 +84,16 @@
       pin.addFragmentWithPinsToPage(filteredOffers);
       card.getPinsListener(filteredOffers);
     };
-    mapFiltersContainer.addEventListener('change', filterData);
+
+    var lastTimeout;
+    mapFiltersContainer.addEventListener('change', function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        filterData();
+      }, CONST.DEBOUNCE_INTERVAL);
+    });
 
   };
 
