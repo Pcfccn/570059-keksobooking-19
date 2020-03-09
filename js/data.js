@@ -45,7 +45,11 @@
       minPrice: [0, 1000, 5000, 10000],
     },
     LOW_PRICE: 10000,
+    LOW_PRICE_TEXT: 'low',
     HIGH_PRICE: 50000,
+    HIGH_PRICE_TEXT: 'high',
+    MIDDLE_PRICE_TEXT: 'middle',
+    FILTER_DEFAULT_VALUE: 'any',
     DEBOUNCE_INTERVAL: 500
   };
 

@@ -6,6 +6,7 @@
   var housingPrice = document.querySelector('#housing-price');
   var housingRooms = document.querySelector('#housing-rooms');
   var housingGuests = document.querySelector('#housing-guests');
+  var mapFiltersSelects = document.querySelectorAll('.map__filter');
   var mapFiltersContainer = document.querySelector('.map .map__filters-container');
   var housingFeatures = document.querySelectorAll('#housing-features input');
   var data = window.data;
@@ -13,6 +14,19 @@
   var form = window.form;
   var card = window.card;
   var load = window.backend.load;
+
+  var disableMapFiltersSelects = function () {
+    for (var selectNum = 0; selectNum < mapFiltersSelects.length; selectNum++) {
+      mapFiltersSelects[selectNum].disabled = true;
+    }
+  };
+
+  var enableMapFiltersSelects = function () {
+    for (var selectNum = 0; selectNum < mapFiltersSelects.length; selectNum++) {
+      mapFiltersSelects[selectNum].disabled = false;
+    }
+  };
+  disableMapFiltersSelects();
 
   var deletePin = function () {
     var offerPin = document.querySelectorAll('.map__pin');
@@ -31,9 +45,9 @@
 
   var getPriceRange = function (price) {
     switch (true) {
-      case (price < CONST.LOW_PRICE): return 'low';
-      case (price > CONST.HIGH_PRICE): return 'high';
-      default: return 'middle';
+      case (price < CONST.LOW_PRICE): return CONST.LOW_PRICE_TEXT;
+      case (price > CONST.HIGH_PRICE): return CONST.HIGH_PRICE_TEXT;
+      default: return CONST.MIDDLE_PRICE_TEXT;
     }
   };
 
@@ -42,24 +56,24 @@
     var filterData = function () {
       filteredOffers = offrs.slice();
 
-      if (housingType.value !== 'any') {
+      if (housingType.value !== CONST.FILTER_DEFAULT_VALUE) {
         filteredOffers = filteredOffers.filter(function (offr) {
           return offr.offer.type === housingType.value;
         });
       }
 
-      if (housingPrice.value !== 'any') {
+      if (housingPrice.value !== CONST.FILTER_DEFAULT_VALUE) {
         filteredOffers = filteredOffers.filter(function (offr) {
           return getPriceRange(offr.offer.price) === housingPrice.value;
         });
       }
-      if (housingRooms.value !== 'any') {
+      if (housingRooms.value !== CONST.FILTER_DEFAULT_VALUE) {
         filteredOffers = filteredOffers.filter(function (offr) {
           return offr.offer.rooms + '' === housingRooms.value;
         });
       }
 
-      if (housingGuests.value !== 'any') {
+      if (housingGuests.value !== CONST.FILTER_DEFAULT_VALUE) {
         filteredOffers = filteredOffers.filter(function (offr) {
           return offr.offer.guests + '' === housingGuests.value;
         });
@@ -103,6 +117,7 @@
     for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
       form.inputs[inputNumb].disabled = true;
     }
+    disableMapFiltersSelects();
     mapWithOffers.classList.add('map--faded');
     document.querySelector('.ad-form').classList.add('ad-form--disabled');
     pin.main.style.left = (pin.mainStartLocation.x - Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)) + 'px';
@@ -121,6 +136,7 @@
           for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
             form.inputs[inputNumb].disabled = false;
           }
+          enableMapFiltersSelects();
           mapWithOffers.classList.remove('map--faded');
           document.querySelector('.ad-form').classList.remove('ad-form--disabled');
           form.addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
