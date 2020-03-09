@@ -51,39 +51,39 @@
     }
   };
 
-  var filterOut = function (offrs) {
+  var filterOut = function (offers) {
     var filteredOffers = [];
     var filterData = function () {
-      filteredOffers = offrs.slice();
+      filteredOffers = offers.slice();
 
       if (housingType.value !== CONST.FILTER_DEFAULT_VALUE) {
-        filteredOffers = filteredOffers.filter(function (offr) {
-          return offr.offer.type === housingType.value;
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return offer.offer.type === housingType.value;
         });
       }
 
       if (housingPrice.value !== CONST.FILTER_DEFAULT_VALUE) {
-        filteredOffers = filteredOffers.filter(function (offr) {
-          return getPriceRange(offr.offer.price) === housingPrice.value;
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return getPriceRange(offer.offer.price) === housingPrice.value;
         });
       }
       if (housingRooms.value !== CONST.FILTER_DEFAULT_VALUE) {
-        filteredOffers = filteredOffers.filter(function (offr) {
-          return offr.offer.rooms + '' === housingRooms.value;
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return offer.offer.rooms + '' === housingRooms.value;
         });
       }
 
       if (housingGuests.value !== CONST.FILTER_DEFAULT_VALUE) {
-        filteredOffers = filteredOffers.filter(function (offr) {
-          return offr.offer.guests + '' === housingGuests.value;
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return offer.offer.guests + '' === housingGuests.value;
         });
       }
 
 
       housingFeatures.forEach(function (feat) {
         if (feat.checked) {
-          filteredOffers = filteredOffers.filter(function (offr) {
-            return offr.offer.features.includes(feat.value);
+          filteredOffers = filteredOffers.filter(function (offer) {
+            return offer.offer.features.includes(feat.value);
           });
         }
       }
@@ -130,8 +130,8 @@
 
   var activate = function () {
     load(
-        function (offrs) {
-          var cardsFragment = card.getFragmentWithCards(offrs);
+        function (offers) {
+          var cardsFragment = card.getFragmentWithCards(offers);
           document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
           for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
             form.inputs[inputNumb].disabled = false;
@@ -140,13 +140,13 @@
           mapWithOffers.classList.remove('map--faded');
           document.querySelector('.ad-form').classList.remove('ad-form--disabled');
           form.addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
-          pin.addFragmentWithPinsToPage(offrs);
-          card.getPinsListener(offrs);
+          pin.addFragmentWithPinsToPage(offers);
+          card.getPinsListener(offers);
           window.pin.dragPin();
           pin.main.removeEventListener('mousedown', pin.onLeftMouseButtonMain);
           pin.main.removeEventListener('keydown', pin.onEnterKeyMain);
 
-          filterOut(offrs);
+          filterOut(offers);
         },
 
         function (err) {
