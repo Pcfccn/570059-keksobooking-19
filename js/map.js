@@ -3,57 +3,121 @@
   var CONST = window.data.CONST;
   var mapWithOffers = document.querySelector('.map');
   var housingType = document.querySelector('#housing-type');
-  var mapFilters = document.querySelectorAll('.map__filter');
+  var housingPrice = document.querySelector('#housing-price');
+  var housingRooms = document.querySelector('#housing-rooms');
+  var housingGuests = document.querySelector('#housing-guests');
+  var mapFiltersSelects = document.querySelectorAll('.map__filter');
+  var mapFiltersContainer = document.querySelector('.map .map__filters-container');
+  var housingFeatures = document.querySelectorAll('#housing-features input');
   var data = window.data;
   var pin = window.pin;
   var form = window.form;
   var card = window.card;
   var load = window.backend.load;
 
-  var delPin = function () {
+  var disableMapFiltersSelects = function () {
+    for (var selectNum = 0; selectNum < mapFiltersSelects.length; selectNum++) {
+      mapFiltersSelects[selectNum].disabled = true;
+    }
+  };
+
+  var enableMapFiltersSelects = function () {
+    for (var selectNum = 0; selectNum < mapFiltersSelects.length; selectNum++) {
+      mapFiltersSelects[selectNum].disabled = false;
+    }
+  };
+  disableMapFiltersSelects();
+
+  var deletePin = function () {
     var offerPin = document.querySelectorAll('.map__pin');
     for (var pn = offerPin.length; pn > 1; pn--) {
       offerPin[pn - 1].remove();
     }
   };
 
-  var delCard = function () {
+  var deleteCard = function () {
     var mapCard = document.querySelectorAll('.map__card');
     for (var cn = mapCard.length; cn > 0; cn--) {
       mapCard[cn - 1].remove();
     }
   };
 
-  var filterOut = function (offrs) {
-    var filteredOffers = offrs.slice();
+
+  var getPriceRange = function (price) {
+    switch (true) {
+      case (price < CONST.LOW_PRICE): return CONST.LOW_PRICE_TEXT;
+      case (price > CONST.HIGH_PRICE): return CONST.HIGH_PRICE_TEXT;
+      default: return CONST.MIDDLE_PRICE_TEXT;
+    }
+  };
+
+  var filterOut = function (offers) {
+    var filteredOffers = [];
     var filterData = function () {
-      if (housingType.value === 'any') {
-        filteredOffers = offrs.slice();
-      } else {
-        filteredOffers = offrs.filter(function (offr) {
-          return offr.offer.type === housingType.value;
+      filteredOffers = offers.slice();
+
+      if (housingType.value !== CONST.FILTER_DEFAULT_VALUE) {
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return offer.offer.type === housingType.value;
         });
       }
-      delPin();
-      delCard();
+
+      if (housingPrice.value !== CONST.FILTER_DEFAULT_VALUE) {
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return getPriceRange(offer.offer.price) === housingPrice.value;
+        });
+      }
+      if (housingRooms.value !== CONST.FILTER_DEFAULT_VALUE) {
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return offer.offer.rooms + '' === housingRooms.value;
+        });
+      }
+
+      if (housingGuests.value !== CONST.FILTER_DEFAULT_VALUE) {
+        filteredOffers = filteredOffers.filter(function (offer) {
+          return offer.offer.guests + '' === housingGuests.value;
+        });
+      }
+
+
+      housingFeatures.forEach(function (feat) {
+        if (feat.checked) {
+          filteredOffers = filteredOffers.filter(function (offer) {
+            return offer.offer.features.includes(feat.value);
+          });
+        }
+      }
+      );
+
+
+      deletePin();
+      deleteCard();
       var cardsFragment = card.getFragmentWithCards(filteredOffers);
-      var mapFiltersContainer = document.querySelector('.map .map__filters-container');
+
       document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
       pin.addFragmentWithPinsToPage(filteredOffers);
       card.getPinsListener(filteredOffers);
     };
-    mapFilters.forEach(function () {
-      addEventListener('change', filterData);
+
+    var lastTimeout;
+    mapFiltersContainer.addEventListener('change', function () {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        filterData();
+      }, CONST.DEBOUNCE_INTERVAL);
     });
 
   };
 
   var disactivate = function () {
-    delPin();
-    delCard();
+    deletePin();
+    deleteCard();
     for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
       form.inputs[inputNumb].disabled = true;
     }
+    disableMapFiltersSelects();
     mapWithOffers.classList.add('map--faded');
     document.querySelector('.ad-form').classList.add('ad-form--disabled');
     pin.main.style.left = (pin.mainStartLocation.x - Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)) + 'px';
@@ -66,23 +130,23 @@
 
   var activate = function () {
     load(
-        function (offrs) {
-          var cardsFragment = card.getFragmentWithCards(offrs);
-          var mapFiltersContainer = document.querySelector('.map .map__filters-container');
+        function (offers) {
+          var cardsFragment = card.getFragmentWithCards(offers);
           document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
           for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
             form.inputs[inputNumb].disabled = false;
           }
+          enableMapFiltersSelects();
           mapWithOffers.classList.remove('map--faded');
           document.querySelector('.ad-form').classList.remove('ad-form--disabled');
           form.addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
-          pin.addFragmentWithPinsToPage(offrs);
-          card.getPinsListener(offrs);
+          pin.addFragmentWithPinsToPage(offers);
+          card.getPinsListener(offers);
           window.pin.dragPin();
           pin.main.removeEventListener('mousedown', pin.onLeftMouseButtonMain);
           pin.main.removeEventListener('keydown', pin.onEnterKeyMain);
 
-          filterOut(offrs);
+          filterOut(offers);
         },
 
         function (err) {
