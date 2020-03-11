@@ -21,12 +21,12 @@
   var inputTimeout = document.querySelector('#timeout');
 
   typeInput.addEventListener('change', function (evt) {
-    for (var caseNum = 0; caseNum < CONST.OFFER_OPTIONS.types.length; caseNum++) {
-      if (evt.target.value === CONST.OFFER_OPTIONS.types[caseNum]) {
-        priceInput.placeholder = CONST.OFFER_OPTIONS.minPrice[caseNum];
-        priceInput.min = CONST.OFFER_OPTIONS.minPrice[caseNum];
+    CONST.OFFER_OPTIONS.types.forEach(function (type, i) {
+      if (evt.target.value === type) {
+        priceInput.placeholder = CONST.OFFER_OPTIONS.minPrice[i];
+        priceInput.min = CONST.OFFER_OPTIONS.minPrice[i];
       }
-    }
+    });
   });
 
   inputTimein.addEventListener('change', function (evt) {
