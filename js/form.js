@@ -9,9 +9,9 @@
   addressInput.value = pin.mainStartLocation.x + ', ' + (pin.mainStartLocation.y - CONST.MAP_MAIN_PIN_HEIGHT);
 
   inputs = document.querySelectorAll('fieldSet');
-  for (var inputNumber = 0; inputNumber < inputs.length; inputNumber++) {
-    inputs[inputNumber].disabled = true;
-  }
+  inputs.forEach(function (input) {
+    input.disabled = true;
+  });
 
   var roomNumberInput = document.querySelector('#room_number');
   var capacityInput = document.querySelector('#capacity');
@@ -53,9 +53,9 @@
   roomNumberInput.addEventListener('change', function (evt) {
     removeOptions();
     var rooms = CONST.ROOMS_AMOUNT_VALUES[evt.target.value];
-    for (var room = 0; room < rooms.length; room++) {
-      getRoomInfo(rooms[room]);
-    }
+    rooms.forEach(function (room) {
+      getRoomInfo(room);
+    });
   });
 
   var form = document.querySelector('.ad-form');
@@ -75,16 +75,16 @@
 
 
   var closeSuccessPopup = function () {
-    document.removeEventListener('click', successPopupHandler);
-    document.removeEventListener('keydown', onEscrKeyPopupButton);
+    document.removeEventListener('click', onClickSuccessPopup);
+    document.removeEventListener('keydown', onEscKeyPopupButton);
     document.querySelector('.success').remove();
   };
-  var successPopupHandler = function (evt) {
+  var onClickSuccessPopup = function (evt) {
     if (evt.button === CONST.LEFT_CLICK_CODE) {
       closeSuccessPopup();
     }
   };
-  var onEscrKeyPopupButton = function (evt) {
+  var onEscKeyPopupButton = function (evt) {
     if (evt.key === CONST.ESC_KEY) {
       closeSuccessPopup();
     }
@@ -103,16 +103,16 @@
           var fragment = document.createDocumentFragment();
           fragment.appendChild(successPopup);
           document.body.prepend(fragment);
-          document.addEventListener('click', successPopupHandler);
-          document.addEventListener('keydown', onEscrKeyPopupButton);
+          document.addEventListener('click', onClickSuccessPopup);
+          document.addEventListener('keydown', onEscKeyPopupButton);
         },
         function (err) {
           var errorPopupTemplate = document.querySelector('#error').content;
           var errorPopup = errorPopupTemplate.cloneNode(true);
           errorPopup.querySelector('.error__message').textContent = err;
-          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.errorButtonHandler);
-          errorPopup.querySelector('.error__button').addEventListener('keydown', data.errorButtonHandler);
-          document.addEventListener('keydown', data.onEscrKeyPopupButton);
+          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.onClickErrorButton);
+          errorPopup.querySelector('.error__button').addEventListener('keydown', data.onEnterKeyErrorButton);
+          document.addEventListener('keydown', data.onEscKeyPopupButton);
           var fragment = document.createDocumentFragment();
           fragment.appendChild(errorPopup);
           document.body.prepend(fragment);

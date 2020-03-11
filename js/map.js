@@ -80,10 +80,10 @@
       }
 
 
-      housingFeatures.forEach(function (feat) {
-        if (feat.checked) {
+      housingFeatures.forEach(function (feature) {
+        if (feature.checked) {
           filteredOffers = filteredOffers.filter(function (offer) {
-            return offer.offer.features.includes(feat.value);
+            return offer.offer.features.includes(feature.value);
           });
         }
       }
@@ -153,9 +153,9 @@
           var errorPopupTemplate = document.querySelector('#error').content;
           var errorPopup = errorPopupTemplate.cloneNode(true);
           errorPopup.querySelector('.error__message').textContent = err;
-          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.errorButtonHandler);
-          errorPopup.querySelector('.error__button').addEventListener('keydown', data.errorButtonHandler);
-          document.addEventListener('keydown', data.onEscrKeyPopupButton);
+          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.onClickErrorButton);
+          errorPopup.querySelector('.error__button').addEventListener('keydown', data.onEnterKeyErrorButton);
+          document.addEventListener('keydown', data.onEscKeyPopupButton);
           var fragment = document.createDocumentFragment();
           fragment.appendChild(errorPopup);
           document.body.prepend(fragment);

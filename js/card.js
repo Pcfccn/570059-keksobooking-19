@@ -25,14 +25,22 @@
       'conditioner': cardEl.querySelector('.popup__feature.popup__feature--conditioner'),
     };
     if (ofrCard.offer.features.length) {
-      for (var frnum = 0; frnum < ofrCard.offer.features.length; frnum++) {
-        offerFeatures[ofrCard.offer.features[frnum]] = null;
-      }
-      for (var i = 0; i < CONST.OFFERS_FEATURES.length; i++) {
-        if (offerFeatures[CONST.OFFERS_FEATURES[i]]) {
-          offerFeatures[CONST.OFFERS_FEATURES[i]].remove();
+      ofrCard.offer.features.forEach(function (offerFeature) {
+        offerFeatures[offerFeature] = null;
+      });
+      // for (var frnum = 0; frnum < ofrCard.offer.features.length; frnum++) {
+      //   offerFeatures[ofrCard.offer.features[frnum]] = null;
+      // }
+      CONST.OFFERS_FEATURES.forEach(function (feature) {
+        if (offerFeatures[feature]) {
+          offerFeatures[feature].remove();
         }
-      }
+      });
+      // for (var i = 0; i < CONST.OFFERS_FEATURES.length; i++) {
+      //   if (offerFeatures[CONST.OFFERS_FEATURES[i]]) {
+      //     offerFeatures[CONST.OFFERS_FEATURES[i]].remove();
+      //   }
+      // }
     } else {
       cardEl.querySelector('.popup__features').remove();
     }
