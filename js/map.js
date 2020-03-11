@@ -15,18 +15,18 @@
   var card = window.card;
   var load = window.backend.load;
 
-  var disableMapFiltersSelects = function () {
-    for (var selectNum = 0; selectNum < mapFiltersSelects.length; selectNum++) {
-      mapFiltersSelects[selectNum].disabled = true;
-    }
+  var disableElements = function (elements) {
+    elements.forEach(function (element) {
+      element.disabled = true;
+    });
+  };
+  var enableElements = function (elements) {
+    elements.forEach(function (element) {
+      element.disabled = false;
+    });
   };
 
-  var enableMapFiltersSelects = function () {
-    for (var selectNum = 0; selectNum < mapFiltersSelects.length; selectNum++) {
-      mapFiltersSelects[selectNum].disabled = false;
-    }
-  };
-  disableMapFiltersSelects();
+  disableElements(mapFiltersSelects);
 
   var deletePin = function () {
     var offerPin = document.querySelectorAll('.map__pin');
@@ -114,10 +114,8 @@
   var disactivate = function () {
     deletePin();
     deleteCard();
-    for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
-      form.inputs[inputNumb].disabled = true;
-    }
-    disableMapFiltersSelects();
+    disableElements(form.inputs);
+    disableElements(mapFiltersSelects);
     mapWithOffers.classList.add('map--faded');
     document.querySelector('.ad-form').classList.add('ad-form--disabled');
     pin.main.style.left = (pin.mainStartLocation.x - Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)) + 'px';
@@ -133,10 +131,8 @@
         function (offers) {
           var cardsFragment = card.getFragmentWithCards(offers);
           document.querySelector('.map').insertBefore(cardsFragment, mapFiltersContainer);
-          for (var inputNumb = 0; inputNumb < form.inputs.length; inputNumb++) {
-            form.inputs[inputNumb].disabled = false;
-          }
-          enableMapFiltersSelects();
+          enableElements(form.inputs);
+          enableElements(mapFiltersSelects);
           mapWithOffers.classList.remove('map--faded');
           document.querySelector('.ad-form').classList.remove('ad-form--disabled');
           form.addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
