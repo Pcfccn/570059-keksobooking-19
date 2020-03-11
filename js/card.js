@@ -28,19 +28,11 @@
       ofrCard.offer.features.forEach(function (offerFeature) {
         offerFeatures[offerFeature] = null;
       });
-      // for (var frnum = 0; frnum < ofrCard.offer.features.length; frnum++) {
-      //   offerFeatures[ofrCard.offer.features[frnum]] = null;
-      // }
       CONST.OFFERS_FEATURES.forEach(function (feature) {
         if (offerFeatures[feature]) {
           offerFeatures[feature].remove();
         }
       });
-      // for (var i = 0; i < CONST.OFFERS_FEATURES.length; i++) {
-      //   if (offerFeatures[CONST.OFFERS_FEATURES[i]]) {
-      //     offerFeatures[CONST.OFFERS_FEATURES[i]].remove();
-      //   }
-      // }
     } else {
       cardEl.querySelector('.popup__features').remove();
     }
@@ -94,14 +86,21 @@
   };
 
   var hideAllCards = function () {
-    var offerCard = document.querySelectorAll('.map__card.popup');
-    for (var offerCardNum = 0; offerCardNum < offerCard.length; offerCardNum++) {
-      if (!offerCard[offerCardNum].classList.contains('hidden')) {
-        offerCard[offerCardNum].classList.add('hidden');
+    var offerCards = document.querySelectorAll('.map__card.popup');
+    offerCards.forEach(function (offerCard) {
+      if (!offerCard.classList.contains('hidden')) {
+        offerCard.classList.add('hidden');
       }
       document.removeEventListener('keydown', onCardEscPress);
-      offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
-    }
+      offerCard.querySelector('.popup__close').removeEventListener('click', hideAllCards);
+    });
+    // for (var offerCardNum = 0; offerCardNum < offerCard.length; offerCardNum++) {
+    //   if (!offerCard[offerCardNum].classList.contains('hidden')) {
+    //     offerCard[offerCardNum].classList.add('hidden');
+    //   }
+    //   document.removeEventListener('keydown', onCardEscPress);
+    //   offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
+    // }
   };
 
   var showOffercard = function (num) {
