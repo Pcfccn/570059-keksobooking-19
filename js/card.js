@@ -71,11 +71,11 @@
 
   var getFragmentWithCards = function (offerCards) {
     var cardsFragments = document.createDocumentFragment();
-    for (var num = 0; num < offerCards.length; num++) {
-      if (offerCards[num].offer) {
-        cardsFragments.appendChild(getCardElement(offerCards[num]));
+    offerCards.forEach(function (offerCard) {
+      if (offerCard.offer) {
+        cardsFragments.appendChild(getCardElement(offerCard));
       }
-    }
+    });
     return cardsFragments;
   };
 
@@ -94,13 +94,6 @@
       document.removeEventListener('keydown', onCardEscPress);
       offerCard.querySelector('.popup__close').removeEventListener('click', hideAllCards);
     });
-    // for (var offerCardNum = 0; offerCardNum < offerCard.length; offerCardNum++) {
-    //   if (!offerCard[offerCardNum].classList.contains('hidden')) {
-    //     offerCard[offerCardNum].classList.add('hidden');
-    //   }
-    //   document.removeEventListener('keydown', onCardEscPress);
-    //   offerCard[offerCardNum].querySelector('.popup__close').removeEventListener('click', hideAllCards);
-    // }
   };
 
   var showOffercard = function (num) {
