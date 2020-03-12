@@ -65,7 +65,7 @@
     getRoomInfo(CONST.ROOMS_AMOUNT_VALUES['1']);
     priceInput.placeholder = CONST.OFFER_OPTIONS.minPrice[0];
     priceInput.min = CONST.OFFER_OPTIONS.minPrice[0];
-    addressInput.value = pin.mainActiveLocation().x + ', ' + (pin.mainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
+    addressInput.value = pin.getMainActiveLocation().x + ', ' + (pin.getMainActiveLocation().y - CONST.MAP_MAIN_PIN_HEIGHT);
   };
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', function (evt) {
@@ -90,6 +90,27 @@
     }
   };
 
+  var showSuccessPopup = function () {
+    var successPopupTemplate = document.querySelector('#success').content;
+    var successPopup = successPopupTemplate.cloneNode(true);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(successPopup);
+    document.body.prepend(fragment);
+    document.addEventListener('click', onClickSuccessPopup);
+    document.addEventListener('keydown', onEscKeyPopupButton);
+  };
+
+  var showErrorPopup = function (errorText) {
+    var errorPopupTemplate = document.querySelector('#error').content;
+    var errorPopup = errorPopupTemplate.cloneNode(true);
+    errorPopup.querySelector('.error__message').textContent = errorText;
+    errorPopup.querySelector('.error__button').addEventListener('mousedown', data.onClickErrorButton);
+    errorPopup.querySelector('.error__button').addEventListener('keydown', data.onEnterKeyErrorButton);
+    document.addEventListener('keydown', data.onEscKeyPopupButton);
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(errorPopup);
+    document.body.prepend(fragment);
+  };
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
@@ -98,24 +119,10 @@
         function () {
           resetForm();
           window.map.disactivate();
-          var successPopupTemplate = document.querySelector('#success').content;
-          var successPopup = successPopupTemplate.cloneNode(true);
-          var fragment = document.createDocumentFragment();
-          fragment.appendChild(successPopup);
-          document.body.prepend(fragment);
-          document.addEventListener('click', onClickSuccessPopup);
-          document.addEventListener('keydown', onEscKeyPopupButton);
+          showSuccessPopup();
         },
         function (err) {
-          var errorPopupTemplate = document.querySelector('#error').content;
-          var errorPopup = errorPopupTemplate.cloneNode(true);
-          errorPopup.querySelector('.error__message').textContent = err;
-          errorPopup.querySelector('.error__button').addEventListener('mousedown', data.onClickErrorButton);
-          errorPopup.querySelector('.error__button').addEventListener('keydown', data.onEnterKeyErrorButton);
-          document.addEventListener('keydown', data.onEscKeyPopupButton);
-          var fragment = document.createDocumentFragment();
-          fragment.appendChild(errorPopup);
-          document.body.prepend(fragment);
+          showErrorPopup(err);
         }
     );
   });

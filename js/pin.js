@@ -25,21 +25,21 @@
     y: getPinLocation().y + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2)
   };
 
-  var mainActiveLocation = function () {
-    var loc = {
+  var getMainActiveLocation = function () {
+    var location = {
       x: getPinLocation().x + Math.round(CONST.MAP_MAIN_PIN_WIDTH / 2),
       y: getPinLocation().y + CONST.MAP_MAIN_PIN_HEIGHT};
-    return loc;
+    return location;
   };
 
   var addFragmentWithPinsToPage = function (offersList) {
-    var Fragment = document.createDocumentFragment();
-    var offersNumber = offersList.length > 5 ? 5 : offersList.length;
+    var fragment = document.createDocumentFragment();
+    var offersNumber = offersList.length > CONST.MAX_AMOUNT_OF_PINS ? CONST.MAX_AMOUNT_OF_PINS : offersList.length;
 
     for (var m = 0; m < offersNumber; m++) {
-      Fragment.appendChild(getFragmentWithPin(offersList[m]));
+      fragment.appendChild(getFragmentWithPin(offersList[m]));
     }
-    document.querySelector('.map__pins').appendChild(Fragment);
+    document.querySelector('.map__pins').appendChild(fragment);
   };
 
   var onEnterKeyMain = function (evt) {
@@ -60,7 +60,7 @@
     main: mapPinMain,
     getLocation: getPinLocation,
     mainStartLocation: mainStartLocation,
-    mainActiveLocation: mainActiveLocation,
+    getMainActiveLocation: getMainActiveLocation,
     addFragmentWithPinsToPage: addFragmentWithPinsToPage,
     onEnterKeyMain: onEnterKeyMain,
     onLeftMouseButtonMain: onLeftMouseButtonMain

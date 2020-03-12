@@ -4,14 +4,9 @@
     ENTER_KEY: 'Enter',
     ESC_KEY: 'Escape',
     LEFT_CLICK_CODE: 0,
-    NUMBER_OF_OFFERS: 8,
-    TYPES: ['palace', 'flat', 'house', 'bungalo'],
     CHECKIN_TIMES: ['12:00', '13:00', '14:00'],
     CHECKOUT_TIMES: ['12:00', '13:00', '14:00'],
     OFFERS_FEATURES: ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'],
-    PHOTOS: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-      'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-      'http://o0.github.io/assets/images/tokyo/hotel3.jpg'],
     MAP_PIN_WIDTH: 50,
     MAP_MAIN_PIN_WIDTH: 65,
     MAP_MAIN_PIN_HEIGHT: 77,
@@ -50,7 +45,8 @@
     HIGH_PRICE_TEXT: 'high',
     MIDDLE_PRICE_TEXT: 'middle',
     FILTER_DEFAULT_VALUE: 'any',
-    DEBOUNCE_INTERVAL: 500
+    DEBOUNCE_INTERVAL: 500,
+    MAX_AMOUNT_OF_PINS: 5
   };
 
   var offers = [];
