@@ -77,26 +77,14 @@
 
 
   var closeErrorPopup = function () {
-    document.querySelector('.error__button').removeEventListener('mousedown', onClickErrorButton);
-    document.querySelector('.error__button').removeEventListener('keydown', onEnterKeyErrorButton);
-    document.removeEventListener('keydown', onEscKeyPopupButton);
+    document.querySelector('.error__button').removeEventListener('mousedown', onCloseErrorButton);
+    document.querySelector('.error__button').removeEventListener('keydown', onCloseErrorButton);
+    document.removeEventListener('keydown', onCloseErrorButton);
     document.querySelector('.error').remove();
   };
 
-  var onClickErrorButton = function (evt) {
-    if (evt.button === DATA.LEFT_CLICK_CODE) {
-      closeErrorPopup();
-    }
-  };
-
-  var onEnterKeyErrorButton = function (evt) {
-    if (evt.key === DATA.ENTER_KEY) {
-      closeErrorPopup();
-    }
-  };
-
-  var onEscKeyPopupButton = function (evt) {
-    if (evt.key === DATA.ESC_KEY) {
+  var onCloseErrorButton = function (evt) {
+    if (evt.button === DATA.LEFT_CLICK_CODE || evt.key === DATA.ENTER_KEY || evt.key === DATA.ESC_KEY) {
       closeErrorPopup();
     }
   };
@@ -110,8 +98,6 @@
     getRandomValue: getRandomValue,
     mapMainPinRightmostX: mapMainPinRightmostX,
     numDecline: numDecline,
-    onEnterKeyErrorButton: onEnterKeyErrorButton,
-    onClickErrorButton: onClickErrorButton,
-    onEscKeyPopupButton: onEscKeyPopupButton,
+    onCloseErrorButton: onCloseErrorButton
   };
 })();

@@ -103,9 +103,9 @@
     var errorPopupTemplate = document.querySelector('#error').content;
     var errorPopup = errorPopupTemplate.cloneNode(true);
     errorPopup.querySelector('.error__message').textContent = errorText;
-    errorPopup.querySelector('.error__button').addEventListener('mousedown', data.onClickErrorButton);
-    errorPopup.querySelector('.error__button').addEventListener('keydown', data.onEnterKeyErrorButton);
-    document.addEventListener('keydown', data.onEscKeyPopupButton);
+    errorPopup.querySelector('.error__button').addEventListener('mousedown', data.onCloseErrorButton);
+    errorPopup.querySelector('.error__button').addEventListener('keydown', data.onCloseErrorButton);
+    document.addEventListener('keydown', data.onCloseErrorButton);
     var fragment = document.createDocumentFragment();
     fragment.appendChild(errorPopup);
     document.body.prepend(fragment);
