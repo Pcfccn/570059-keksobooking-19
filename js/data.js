@@ -46,7 +46,10 @@
     MIDDLE_PRICE_TEXT: 'middle',
     FILTER_DEFAULT_VALUE: 'any',
     DEBOUNCE_INTERVAL: 500,
-    MAX_AMOUNT_OF_PINS: 5
+    MAX_AMOUNT_OF_PINS: 5,
+    FILE_TYPES: ['gif', 'jpg', 'jpeg', 'png'],
+    FORM_PICTURE_RADIUS: '5px',
+    FORM_PHOTO_ALT: 'Фотография жилья',
   };
 
   var offers = [];

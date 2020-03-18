@@ -5,7 +5,7 @@
   var mapMainPinRightmostX = window.data.mapMainPinRightmostX;
   var form = window.form;
   var dragged = false;
-  var startСoordinates = {x: '', y: ''};
+  var startCoordinates = {x: '', y: ''};
 
   var checkPinPosition = function () {
     if (pin.main.offsetLeft > (mapMainPinRightmostX + CONST.MAP_MAIN_PIN_WIDTH / 2)) {
@@ -22,11 +22,11 @@
 
   var getPinPosition = function (typeEvt) {
     var shift = {
-      x: startСoordinates.x - typeEvt.clientX,
-      y: startСoordinates.y - typeEvt.clientY
+      x: startCoordinates.x - typeEvt.clientX,
+      y: startCoordinates.y - typeEvt.clientY
     };
     dragged = true;
-    startСoordinates = {
+    startCoordinates = {
       x: typeEvt.clientX,
       y: typeEvt.clientY
     };
@@ -39,7 +39,7 @@
   var dragPin = function () {
     pin.main.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
-      startСoordinates = {
+      startCoordinates = {
         x: evt.clientX,
         y: evt.clientY
       };

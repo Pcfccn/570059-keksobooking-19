@@ -3,12 +3,11 @@
   var CONST = window.data.CONST;
   var data = window.data;
   var addressInput = document.querySelector('#address');
-  var inputs = document.querySelectorAll('fieldSet');
   var pin = window.pin;
 
   addressInput.value = pin.mainStartLocation.x + ', ' + (pin.mainStartLocation.y - CONST.MAP_MAIN_PIN_HEIGHT);
 
-  inputs = document.querySelectorAll('fieldSet');
+  var inputs = document.querySelectorAll('fieldSet');
   inputs.forEach(function (input) {
     input.disabled = true;
   });
