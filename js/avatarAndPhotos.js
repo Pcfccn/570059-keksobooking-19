@@ -38,7 +38,6 @@
       }
     });
   };
-
   choosePicture(avatarChooser, avatarPreview);
   choosePicture(photoChooser, photoPreview);
 })();
