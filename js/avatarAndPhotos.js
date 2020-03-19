@@ -8,16 +8,6 @@
   var photoChooser = document.querySelector('.ad-form__upload input[type=file]');
   var photoPreview = document.querySelector('.ad-form__photo');
 
-  var setPreviewProperty = function (previewForm, previewElement, reader) {
-    previewElement.src = reader.result;
-    previewElement.width = previewForm.offsetWidth;
-    previewElement.height = previewForm.offsetHeight;
-    previewElement.style.borderRadius = CONST.FORM_PICTURE_RADIUS;
-    if (!previewElement.alt) {
-      previewElement.alt = CONST.FORM_PHOTO_ALT;
-    }
-  };
-
   var choosePicture = function (fileChooser, preview) {
     fileChooser.addEventListener('change', function () {
       var file = fileChooser.files[0];
@@ -31,10 +21,16 @@
         var reader = new FileReader();
         reader.addEventListener('load', function () {
           if (preview.querySelector('img')) {
-            setPreviewProperty(preview, preview.querySelector('img'), reader);
+            var previewImg = preview.querySelector('img');
+            previewImg.src = reader.result;
+
           } else {
             var newElement = document.createElement('img');
-            setPreviewProperty(preview, newElement, reader);
+            newElement.src = reader.result;
+            newElement.width = preview.offsetWidth;
+            newElement.height = preview.offsetHeight;
+            newElement.style.borderRadius = '5px';
+            newElement.alt = 'Фотография жилья';
             preview.appendChild(newElement);
           }
         });
